@@ -1,6 +1,8 @@
 # Migration Plan
 
 ## Target
+Product scope and release acceptance are defined in `REQUIREMENTS.md`. Follow its P0/P1 boundaries and keep proposed defaults distinguishable from confirmed requirements.
+
 An installable Typecho theme with Homecraft's 3D homepage, native blog content and a conventional reading experience. Initial estimate: 8–12 developer-days for a usable release, subject to environment validation and agreed scope. This is an estimate, not a delivery commitment.
 
 ## Technology boundary
@@ -9,6 +11,8 @@ JavaScript is the primary stack, using native ES modules for the scene, UI, fron
 Use thin server-rendered templates for canonical URLs and readable fallback content. Keep authorization, private-content filtering and comment validation in Typecho. Define the JavaScript/PHP data contract before adding custom endpoints; prefer existing native capabilities and do not assume an installed REST plugin.
 
 ## Phase 1: Environment and proof of concept
+Current evidence: see `PHASE1-REPORT.md`. Core POC and local scene resource loading are validated. Public cross-site portal metadata remains later integration work. `INTEGRATION.md` records the native-page homepage decision and bootstrap contract.
+
 - Confirm the installed Typecho version, PHP version, plugins, permalink mode and image digest.
 - Create an isolated test environment with synthetic posts and comments.
 - Decide starter island versus adapted showcase, and document the choice.
@@ -16,6 +20,8 @@ Use thin server-rendered templates for canonical URLs and readable fallback cont
 Acceptance: a test-only theme renders the scene without missing resources or changes to the live blog.
 
 ## Phase 2: Theme skeleton
+Completed in the isolated tested environment; see `PHASE2-REPORT.md`. Shared templates and validated JavaScript entry work at the root and `/journal/` prefix with native query-string permalinks.
+
 - Implement Typecho theme metadata and thin reusable PHP adapter templates.
 - Define the frontend data contract and JavaScript modules for UI, content presentation and interactions.
 - Organize assets and integration code; support absolute resource URLs and safely encoded settings.
