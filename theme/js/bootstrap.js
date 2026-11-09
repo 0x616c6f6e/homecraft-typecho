@@ -21,6 +21,7 @@ export function validateBootstrap(data) {
     || !string(data.site.language) || !webURL(data.site.url)) invalid();
   if (!object(data.urls) || !['home', 'blog', 'feed', 'themeBase'].every(key => webURL(data.urls[key]))
     || !data.urls.themeBase.endsWith('/')) invalid();
+  if (data.urls.assetBase !== undefined && (!webURL(data.urls.assetBase) || !data.urls.assetBase.endsWith('/'))) invalid();
   if (data.profile !== undefined && (!object(data.profile)
     || !['name','introduction','logo','favicon'].every(key => string(data.profile[key]))
     || !['logo','favicon'].every(key => data.profile[key] === '' || webURL(data.profile[key]))

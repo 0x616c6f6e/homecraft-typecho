@@ -2,7 +2,9 @@
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 require_once __DIR__ . '/functions.php';
 $data = hcBootstrap($this);
-$base = $data['urls']['themeBase'];
+$base = $data['urls']['assetBase'];
+// HTML includes request/user-specific forms; never cache it as a public asset.
+$this->response->setHeader('Cache-Control', 'private, no-store');
 $isScene = $data['view']['sceneEnabled'];
 $pageTitle = hcPageTitle($this, $data);
 $documentTitle = $data['view']['kind'] === 'home' ? $pageTitle : $pageTitle . ' · ' . $data['site']['title'];

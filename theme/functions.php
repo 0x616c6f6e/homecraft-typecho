@@ -1,6 +1,7 @@
 <?php
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 require_once __DIR__ . '/inc/settings.php';
+require_once __DIR__ . '/inc/assets.php';
 require_once __DIR__ . '/inc/comments.php';
 
 function hcEscape($value): string
@@ -74,6 +75,7 @@ function hcBootstrap($archive): array
         'site' => ['title' => (string) $options->title, 'description' => (string) $options->description, 'url' => (string) $options->siteUrl, 'language' => $settings['language'] === 'en' ? 'en' : 'zh-CN'],
         'urls' => [
             'themeBase' => rtrim($options->themeUrl, '/') . '/',
+            'assetBase' => hcAssetBase(rtrim($options->themeUrl, '/') . '/'),
             'home' => (string) $options->siteUrl,
             'blog' => $options->frontArchive ? \Typecho\Router::url('archive', [], $options->index) : (string) $options->siteUrl,
             'feed' => (string) $options->feedUrl,
