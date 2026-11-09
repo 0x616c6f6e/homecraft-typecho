@@ -4,7 +4,7 @@
 Build an installable Typecho theme that preserves Homecraft's 3D homepage and uses Typecho for publishing, archives, pages and comments. This repository is independent of the running Homecraft deployment.
 
 ## Read first
-Read `docs/MIGRATION.md` and `docs/STATUS.md` before implementation. Treat this file as the shared instruction source for all AI assistants. Tool-specific files point here; keep project rules here to avoid divergence.
+Read `docs/REQUIREMENTS.md`, `docs/MIGRATION.md` and `docs/STATUS.md` before implementation. Treat this file as the shared instruction source for all AI assistants. Tool-specific files point here; keep project rules here to avoid divergence.
 
 ## Communication and scope
 - Communicate with the user in Chinese by default. Write code identifiers and technical documentation in English.
