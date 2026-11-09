@@ -8,6 +8,7 @@
 - Imported 64 upstream starter/runtime files unchanged at `df8033aab87569d2779e1c2f74564183527282f7`; licenses and a SHA-256 inventory are retained.
 - Phase 3 (`0.0.3-dev`) adds public post summaries, JavaScript content enhancement, native post metadata and taxonomy/search/pagination integration. Phase 3 is recorded in separate local implementation, test and documentation commits.
 - Phase 4 (`0.0.4-dev`) adds native validated theme settings, identity/language/weather/skin configuration, reading-mode selection and public about/guestbook mappings. Phase 4 is recorded in local implementation, test and documentation commits. See `SETTINGS.md` and `PHASE4-REPORT.md`.
+- Phase 5 (`0.0.5-dev`) implements responsive reading, native comments/replies, moderation states and a paginated native reply-link compatibility adapter. Phase 5 is recorded in separate local implementation, test and documentation commits. See `READING-COMMENTS.md` and `PHASE5-REPORT.md`.
 - Root development URL: `http://127.0.0.1:18094/`; subdirectory URL: `http://127.0.0.1:18095/journal/`. Both are loopback-only isolated instances with separate data volumes.
 - Phase 1/2 were committed in reviewable batches. Phase 3 is committed locally in batches; no production changes or remote pushes were made. This is not a release-ready theme.
 
@@ -27,15 +28,16 @@
 - Phase 3 query/rewritten suites: 19 cases each passed at both root and subdirectory sites (38 checks). Phase 1/2 regressions also passed again (19 checks).
 - All thirteen theme PHP files, fixture helpers, output-boundary tests and unchanged-runtime inventory passed.
 - Phase 4 native settings suites passed 18 cases in query mode and 18 in rewritten mode at root/subdirectory. Phase 1/2 and Phase 3 query regressions passed 38 cases, for 74 browser checks in this pass. Settings normalization, output boundaries, all 16 theme PHP syntax checks, shell syntax and 64 unchanged upstream file hashes passed. Original theme options and query-string permalink mode were restored.
-- See `PHASE4-REPORT.md`, `PHASE1-REPORT.md`, `PHASE2-REPORT.md` and `PHASE3-REPORT.md` for results and exact untested scope.
+- Phase 5 native reading/comment suites passed 20 cases per permalink mode (40 total), with root/subdirectory and 360-pixel mobile coverage. All 18 theme PHP files, fixture syntax, settings/output-boundary tests, shell syntax and 64 upstream hashes passed. Phase 2 skeleton and Phase 3 query-mode content regressions passed 31 more checks, totaling 71 browser checks. Comment options and query-string permalink mode were restored.
+- See `PHASE5-REPORT.md`, `PHASE4-REPORT.md`, `PHASE1-REPORT.md`, `PHASE2-REPORT.md` and `PHASE3-REPORT.md` for results and exact untested scope.
 
 ## Outstanding decisions and blockers
 - The initial site-root metadata 404/timeout is resolved for local startup through a shared JavaScript traveller adapter. Final scene tests have no HTTP/request failures. A public metadata endpoint and cross-site portal behavior remain later integration work.
-- Final scene preset, supported version/plugin matrix and full comment integration remain to be implemented or confirmed. Guestbook now means a mapped native page with comments enabled.
-- Comment submission, Firefox/WebKit and physical-device performance remain unverified. Theme settings are covered by Phase 4 native administration/browser checks. Root/subdirectory paths, native content visibility and both permalink modes are now validated. Both test instances have been restored to query-string mode.
+- Final scene preset, supported version/plugin matrix and release compatibility remain to be implemented or confirmed. Guestbook now means a mapped native page with comments enabled.
+- Firefox/WebKit and physical-device performance remain unverified. Phase 5 covers native submission, replies, moderation and closure in the isolated browser matrix. Theme settings are covered by Phase 4 native administration/browser checks. Root/subdirectory paths, native content visibility and both permalink modes are now validated. Both test instances have been restored to query-string mode.
 
 ## Next step
-Continue Phase 5 reading presentation and native comments under new implementation scope. Plan public metadata routing before cross-site portal support. Keep work confined to the isolated test instance until production activation is explicitly requested.
+Continue Phase 6 release preparation under new implementation scope: cache/version strategy, reproducible packaging and install/upgrade/rollback validation. Plan public metadata routing before cross-site portal support. Keep work confined to the isolated test instance until production activation is explicitly requested.
 
 ## Commit organization
 - `00e47b0`: migration requirements, shared AI rules and integration analysis.
@@ -59,3 +61,10 @@ No application behavior changed during this commit pass. Each staged diff passed
 - The documentation commit containing this section records Phase 4 administration guidance and the 74-check verification report.
 
 Each staged batch passed whitespace checks. No application behavior changed during this commit pass; the previously recorded browser results remain applicable. Runtime data and local secrets remain ignored and untracked. No remote push or production modification was performed.
+
+## Phase 5 commits
+- `707fa58`: responsive reading enhancements and native comment/reply rendering.
+- `09f45bf`: isolated reading fixtures and native feedback tests across permalink modes.
+- The documentation commit containing this section records Phase 5 integration behavior and the 71-check verification report.
+
+Each staged batch passed whitespace checks. The final saved browser reports were checked again: 20 query-mode comment checks, 20 rewritten-mode comment checks, 12 skeleton regressions and 19 query-mode content regressions passed. No application behavior changed during this commit pass. Runtime data and local secrets remain untracked. No remote push or production changes were performed.

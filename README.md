@@ -1,16 +1,18 @@
 # Homecraft Typecho Theme
 
-A planned Typecho theme migration of [Homecraft](https://github.com/terryHu7/homecraft), combining a 3D homepage with Typecho-managed blog content.
+A development Typecho theme migration of [Homecraft](https://github.com/terryHu7/homecraft), combining a 3D homepage with Typecho-managed blog content.
 
 JavaScript is the primary stack. PHP is limited to Typecho integration, including theme templates, native data access, settings and comments.
 
-Phase 4 provides a JavaScript-first theme under `theme/` with public recent-post cards, native articles/archives/search/pagination, and isolated root/subdirectory Typecho environments. Native theme settings now configure identity, skin, language, weather, links and page mappings. Comments remain in development; this is not a production-ready release.
+Phase 5 provides a JavaScript-first theme under `theme/` with public recent-post cards, native articles/archives/search/pagination, and isolated root/subdirectory Typecho environments. Native theme settings now configure identity, skin, language, weather, links and page mappings. Native comments, replies and responsive reading styles are now implemented in the isolated environment; this is not a production-ready release.
 
 - Shared AI instructions: `AGENTS.md`
 - Product requirements and acceptance matrix: `docs/REQUIREMENTS.md`
 - Migration scope and acceptance criteria: `docs/MIGRATION.md`
 - Selected integration and bootstrap contract: `docs/INTEGRATION.md`
 - Native content design and test commands: `docs/CONTENT-INTEGRATION.md`
+- Reading and comments: `docs/READING-COMMENTS.md`
+- Phase 5 validation: `docs/PHASE5-REPORT.md`
 - Theme configuration: `docs/SETTINGS.md`
 - Phase 4 settings verification: `docs/PHASE4-REPORT.md`
 - Phase 3 content/visibility verification: `docs/PHASE3-REPORT.md`

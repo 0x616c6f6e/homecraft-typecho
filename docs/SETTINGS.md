@@ -11,7 +11,7 @@ Open Typecho Administration → Appearance → Configure theme. Settings use the
 | Recent posts | Integer 1–20, default 10; the public-content filter applies before the limit. |
 | Homepage | Scene (default), or reading. Reading redirects to the native front archive when enabled; otherwise renders the public summaries without loading the engine. |
 | About page | Optional published, released, unprotected native page, excluding the scene template. |
-| Guestbook page | Same eligibility, plus comments enabled. The scene opens the native page; it is not the upstream email mailbox. Comment submission UI remains Phase 5 work. |
+| Guestbook page | Same eligibility, plus comments enabled. The scene opens the native page; it is not the upstream email mailbox. Native comments and replies are rendered on the selected reading page; see READING-COMMENTS.md. |
 | Social links | Optional GitHub, website and X HTTP(S) URLs. |
 | Weather | Disabled by default. When enabled, requires city, valid latitude/longitude and IANA timezone; English city label is optional. Weather requests run in the browser; failure does not block the scene. |
 

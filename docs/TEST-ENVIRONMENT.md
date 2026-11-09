@@ -91,3 +91,20 @@ Both instances are restored to `rewrite=0` after the Phase 3 matrix. Native life
 
 ## Phase 4 settings fixtures
 Run `./dev/run.sh exec -T typecho php /dev-tools/seed-settings.php` and the equivalent `run-subdirectory.sh` command to create synthetic eligible/ineligible pages. Then run `HC_TEST_AUTH=1 ./dev/browser.sh tests/phase4.cjs query` (or `rewritten` after switching both isolated sites with the permalink helper). The mode argument labels the report; it does not change the sites. The suite edits native settings and page visibility/comment flags and deletes its synthetic about page. It restores original theme options in finally; reseed settings pages before another run. It uses the existing opt-in read-only credential mount and must never target production. Results are ignored under work/testenv/browser-results. Pure settings validation runs with `./dev/run.sh exec -T typecho php < tests/settings.php`.
+
+## Phase 5 reading and comments
+`dev/seed-reading.php` creates only synthetic reading/protected pages and synthetic comment rows in the isolated SQLite sites. It removes comments only on those fixture pages before a rerun. It temporarily enables moderation, threading, anti-spam, required email and small comment pages, while disabling rate limiting/automatic closure for deterministic tests. Original values are retained in `/tmp/homecraft-phase5-options.json` in each disposable container until `--restore` runs. Restore before restarting/removing the container; do not use this helper against a real blog.
+
+```sh
+./dev/run.sh exec -T typecho php /dev-tools/seed-reading.php
+./dev/run-subdirectory.sh exec -T typecho php /dev-tools/seed-reading.php
+HC_TEST_AUTH=1 ./dev/browser.sh tests/phase5.cjs query
+# For rewritten coverage, reseed fixtures and switch both sites with permalink-mode.php 1 first.
+HC_TEST_AUTH=1 ./dev/browser.sh tests/phase5.cjs rewritten
+./dev/run.sh exec -T typecho php /dev-tools/seed-reading.php --restore
+./dev/run-subdirectory.sh exec -T typecho php /dev-tools/seed-reading.php --restore
+./dev/run.sh exec -T typecho php /dev-tools/permalink-mode.php 0
+./dev/run-subdirectory.sh exec -T typecho php /dev-tools/permalink-mode.php 0
+```
+
+The mode argument labels/asserts the current mode; it does not switch it. Tests use native administrative moderation and page edits, temporarily close/reopen a synthetic page, submit synthetic visitor replies and signed-in comments to synthetic posts, and verify anonymous isolation. Account credentials use the existing opt-in secret mount and are redacted from test errors. Only loopback test sites are targeted. A failed run also needs the restore commands above. Synthetic approved/pending comments remain in the development database, never in Git.
