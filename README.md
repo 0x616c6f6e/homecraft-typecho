@@ -4,13 +4,15 @@ A planned Typecho theme migration of [Homecraft](https://github.com/terryHu7/hom
 
 JavaScript is the primary stack. PHP is limited to Typecho integration, including theme templates, native data access, settings and comments.
 
-Phase 3 provides a JavaScript-first theme under `theme/` with public recent-post cards, native articles/archives/search/pagination, and isolated root/subdirectory Typecho environments. Theme settings and comments remain in development; this is not a production-ready release.
+Phase 4 provides a JavaScript-first theme under `theme/` with public recent-post cards, native articles/archives/search/pagination, and isolated root/subdirectory Typecho environments. Native theme settings now configure identity, skin, language, weather, links and page mappings. Comments remain in development; this is not a production-ready release.
 
 - Shared AI instructions: `AGENTS.md`
 - Product requirements and acceptance matrix: `docs/REQUIREMENTS.md`
 - Migration scope and acceptance criteria: `docs/MIGRATION.md`
 - Selected integration and bootstrap contract: `docs/INTEGRATION.md`
 - Native content design and test commands: `docs/CONTENT-INTEGRATION.md`
+- Theme configuration: `docs/SETTINGS.md`
+- Phase 4 settings verification: `docs/PHASE4-REPORT.md`
 - Phase 3 content/visibility verification: `docs/PHASE3-REPORT.md`
 - Phase 2 skeleton verification: `docs/PHASE2-REPORT.md`
 - Phase 1 verification and known gaps: `docs/PHASE1-REPORT.md`
@@ -18,7 +20,7 @@ Phase 3 provides a JavaScript-first theme under `theme/` with public recent-post
 - Verified progress and handoff: `docs/STATUS.md`
 - AI entry points: `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md`, `.cursor/rules/homecraft-typecho.mdc`
 
-Upstream code and license notices will be imported together at a recorded revision during implementation.
+Upstream code and license notices are imported together at the revision recorded in `docs/UPSTREAM.md`.
 
 ## Local proof of concept
 

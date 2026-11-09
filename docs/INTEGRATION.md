@@ -11,7 +11,7 @@ The test theme lives in `theme/`. Homecraft's starter runtime is imported unchan
 | Presentation | `theme/css/scene.css`, `reading.css` | Independent fallback entry and minimal reading styles |
 | Development | `dev/`, `tests/phase1.cjs` | Disposable Typecho and actual browser integration checks |
 
-The starter island is the reversible POC baseline, not a final art-direction decision. The POC does not add settings forms, recent-post APIs, complete comments or an installable production release.
+The starter island is the reversible POC baseline, not a final art-direction decision. Phase 4 adds native theme settings and configurable public summaries; complete comments and production packaging remain pending.
 
 ## Homepage and native blog route
 Use a normal published Typecho page with `template=scene.php` (registered using `@package custom`), selected through native Reading settings as `frontPage=page:<cid>`, and enable `frontArchive`. This preserves native initialization, header/footer hooks and article/archive routing. Select a collision-free archive path during installation. `/blog/` is used only in the synthetic test database. PHP generates the URL with `Typecho\Router::url('archive', [], $options->index)`.
@@ -71,3 +71,8 @@ Phase 1 tests assert that the integration adapter is requested and that no self 
 
 ## Phase 3 native content
 `inc/public-posts.php` uses a native content widget with visibility/password/time filters before the ten-post limit. `js/content.js` enhances the server-rendered summary list using safe DOM text nodes. Reading templates retain native content/password gates and taxonomy/author/month links; search and pagination remain Typecho-owned. See `CONTENT-INTEGRATION.md` for the data boundary, native pagination projection, fixture setup and permalink-mode tests.
+
+## Phase 4 additive contract and adapters
+Bootstrap v1 now optionally includes `profile: {name,introduction,logo,favicon,links}` and `pages: {about,guestbook}`. Each profile link is `{id,name,url}` with an allowlisted id; each mapped page is null or `{title,url}`. JavaScript validates these additions while accepting earlier v1 data without them. Settings use request-local normalization and native page filtering; no raw page body is serialized. The recent-summary limit is now configurable from 1–20 (default 10).
+
+The exact `@world/layout.js` import maps to `js/world-layout.js`, which reexports the unchanged upstream layout and removes the mailbox station/object unless a valid guestbook is mapped. `home-config.js` asynchronously validates configured skin dimensions/CORS before exposing it through `@config`; failure or a five-second timeout returns the default skin. Settings never configure an email-mailbox endpoint or credentials. Reading mode delegates to the native archive before rendering the header, or renders a conventional summary fallback if no front archive exists. See SETTINGS.md for administration and validation behavior.

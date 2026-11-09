@@ -37,6 +37,8 @@ Completed in the isolated root/subdirectory environments for query-string and re
 Acceptance: content published through Typecho appears correctly and is directly accessible without the scene.
 
 ## Phase 4: Scene integration and configuration
+Native settings and public page mappings are implemented in the isolated environment; see `SETTINGS.md` and `PHASE4-REPORT.md`. Guestbook submission remains Phase 5; cross-site portal metadata remains deferred.
+
 - Map scene stations to posts, about, contact and an explicitly chosen guestbook destination.
 - Add validated theme settings for identity, skin, weather, language and links.
 - Preserve upstream branding and remove inappropriate showcase identity references.

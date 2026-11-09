@@ -1,7 +1,7 @@
 # Phase 3 Content Integration
 
 ## Public summaries
-The scene receives the ten newest public post summaries through bootstrap v1. `inc/public-posts.php` is a small native Typecho content widget, not a separate API service. It filters before limiting:
+The scene receives the newest public post summaries (configurable from 1–20, default 10) through bootstrap v1. `inc/public-posts.php` is a small native Typecho content widget, not a separate API service. It filters before limiting:
 
 - `type = post` and `status = publish`;
 - publication time strictly before Typecho's current server time;
