@@ -6,3 +6,9 @@ body.hc-fallback { overflow: auto; }
 .hc-fallback #world, .hc-fallback #hud, .hc-fallback #loading { display: none !important; }
 .hc-fallback #pages { display: block !important; }
 @media (max-width: 480px) { .reading-entry { width: max-content; flex-wrap: wrap; justify-content: center; } }
+.recent-posts { max-height: min(50vh, 420px); overflow-y: auto; overscroll-behavior: contain; }
+.recent-posts ol { margin: 0; padding-left: 1.5rem; }
+.recent-posts li { margin-block: .75rem; }
+.recent-posts a { color: inherit; font-weight: 600; overflow-wrap: anywhere; }
+.recent-posts time { display: block; font-size: .8em; opacity: .8; }
+.recent-posts li p { font-size: .9em; margin-top: .25rem; }

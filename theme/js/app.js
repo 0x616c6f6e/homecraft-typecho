@@ -1,9 +1,11 @@
 import { readBootstrap } from './bootstrap.js';
+import { initContent } from './content.js';
 import { showFallback } from './fallback.js';
 
 async function start() {
   const data = readBootstrap();
   document.documentElement.dataset.view = data.view.kind;
+  initContent(data);
   if (data.view.sceneEnabled) {
     const { startScene } = await import('./scene.js');
     await startScene(data);

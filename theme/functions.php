@@ -22,12 +22,48 @@ function hcViewKind($archive): string
     return 'archive';
 }
 
+/** Public summaries use native text rendering/permalinks, never raw rows. */
+function hcPublicPosts(): array
+{
+    static $summaries;
+    if (isset($summaries)) return $summaries;
+    require_once __DIR__ . '/inc/public-posts.php';
+    $posts = HomecraftPublicPosts::alloc(['pageSize' => 10]);
+    $summaries = [];
+    while ($posts->next()) {
+        $summaries[] = [
+            'id' => (int) $posts->cid,
+            'title' => (string) $posts->title,
+            'url' => (string) $posts->permalink,
+            'publishedAt' => gmdate('c', (int) $posts->created),
+            'excerpt' => html_entity_decode((string) $posts->plainExcerpt, ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+        ];
+    }
+    return $summaries;
+}
+
+/** Project native navigation URLs rather than rebuilding Typecho routes. */
+function hcPagination($archive): ?array
+{
+    if (!in_array(hcViewKind($archive), ['archive', 'search'], true)) return null;
+    $links = [];
+    foreach (['prev' => 'previousUrl', 'next' => 'nextUrl'] as $direction => $key) {
+        ob_start();
+        $archive->pageLink('Page', $direction);
+        $html = ob_get_clean();
+        $links[$key] = preg_match('/href="([^\"]*)"/', $html, $match)
+            ? html_entity_decode($match[1], ENT_QUOTES | ENT_HTML5, 'UTF-8') : null;
+    }
+    return ['currentPage' => $archive->getCurrentPage(), 'totalPages' => $archive->getTotalPage()] + $links;
+}
+
 function hcBootstrap($archive): array
 {
     $options = \Utils\Helper::options();
+    $kind = hcViewKind($archive);
     return [
         'schemaVersion' => 1,
-        'view' => ['kind' => hcViewKind($archive), 'sceneEnabled' => hcViewKind($archive) === 'home'],
+        'view' => ['kind' => $kind, 'sceneEnabled' => $kind === 'home'],
         'site' => ['title' => (string) $options->title, 'description' => (string) $options->description, 'url' => (string) $options->siteUrl, 'language' => 'zh-CN'],
         'urls' => [
             'themeBase' => rtrim($options->themeUrl, '/') . '/',
@@ -36,9 +72,8 @@ function hcBootstrap($archive): array
             'feed' => (string) $options->feedUrl,
         ],
         'scene' => ['name' => (string) $options->title, 'skin' => '', 'languages' => ['zh'], 'weather' => null, 'dock' => ['blog', 'about', 'phone'], 'mailbox' => ['endpoint' => '', 'email' => '', 'turnstileSitekey' => ''], 'badge' => true],
-        // Phase 1 intentionally ships no content API or recent-post serializer.
-        'posts' => [],
-        'pagination' => null,
+        'posts' => $kind === 'home' ? hcPublicPosts() : [],
+        'pagination' => hcPagination($archive),
     ];
 }
 

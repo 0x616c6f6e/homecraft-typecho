@@ -8,5 +8,10 @@ export function initReading(data) {
     if (selected) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');
   }
+  // Enhance page-position text without replacing native links or filtering results.
+  const status = document.querySelector('[data-page-position]');
+  if (status && data.pagination) {
+    status.textContent = `第 ${data.pagination.currentPage} 页，共 ${data.pagination.totalPages} 页`;
+  }
   document.body.dataset.readingView = data.view.kind;
 }
