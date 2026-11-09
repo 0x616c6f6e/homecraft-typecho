@@ -1,0 +1,31 @@
+name: homecraft-theme-dev
+services:
+  typecho:
+    image: joyqi/typecho@sha256:657d44a8b20263095b5136562edfc6e4ec4f48ea1296337d4c16b48fabc12558
+    entrypoint: ["/bin/bash", "/dev-tools/start.sh"]
+    environment:
+      TYPECHO_INSTALL: "1"
+      TYPECHO_SITE_URL: http://127.0.0.1:18094
+      TYPECHO_DB_ADAPTER: Pdo_SQLite
+      TYPECHO_DB_FILE: /app/usr/theme-dev.db
+      TYPECHO_DB_PREFIX: typecho_
+      TYPECHO_USER_NAME: theme-dev
+      TYPECHO_USER_MAIL: theme-dev@example.invalid
+      TIMEZONE: Asia/Shanghai
+    ports:
+      - "127.0.0.1:18094:80"
+    volumes:
+      - app:/app
+      - ../theme:/app/usr/themes/homecraft-typecho:ro
+      - ./:/dev-tools:ro
+      - ../work/testenv/admin-password:/run/secrets/admin-password:ro
+    networks: [theme-dev]
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://127.0.0.1/') === false ? 1 : 0);"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+volumes:
+  app:
+networks:
+  theme-dev:
