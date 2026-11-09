@@ -11,3 +11,5 @@
 No upstream engine, world or vendor source modifications were made for this proof of concept. Typecho templates, CSS overrides and JavaScript integration live alongside them. The upstream `index.html` is reference markup, adapted through the new PHP scene template. The static `home.config.js` is replaced by an import-map adapter to safe per-request configuration. Author showcase content is not used as this site's identity. Engine-distributed credits remain intact.
 
 The local upstream clone under ignored `work/frontend/upstream/` is only an analysis reference. Future upgrades must compare this recorded revision and inventory, preserve notices and isolate integration changes.
+
+Packaged development releases relocate static runtime directories together under `static/<assetId>/`. Source checkout paths above remain unchanged, and the packaging test verifies every upstream inventoried byte at its packaged location (the MIT LICENSE stays at package root). The separate immutable graph includes integration modules without rewriting engine/world/vendor source. Retained older graphs are verified against their release manifests.

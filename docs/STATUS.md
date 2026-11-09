@@ -9,6 +9,7 @@
 - Phase 3 (`0.0.3-dev`) adds public post summaries, JavaScript content enhancement, native post metadata and taxonomy/search/pagination integration. Phase 3 is recorded in separate local implementation, test and documentation commits.
 - Phase 4 (`0.0.4-dev`) adds native validated theme settings, identity/language/weather/skin configuration, reading-mode selection and public about/guestbook mappings. Phase 4 is recorded in local implementation, test and documentation commits. See `SETTINGS.md` and `PHASE4-REPORT.md`.
 - Phase 5 (`0.0.5-dev`) implements responsive reading, native comments/replies, moderation states and a paginated native reply-link compatibility adapter. Phase 5 is recorded in separate local implementation, test and documentation commits. See `READING-COMMENTS.md` and `PHASE5-REPORT.md`.
+- Phase 6 (`0.0.6-dev`) adds deterministic development packaging, content-addressed assets, HTML/static cache boundaries and a disposable native lifecycle matrix. Phase 6 is recorded in separate local runtime, build, test and documentation commits. See `INSTALLATION.md` and `PHASE6-REPORT.md`; full production release acceptance is still incomplete.
 - Root development URL: `http://127.0.0.1:18094/`; subdirectory URL: `http://127.0.0.1:18095/journal/`. Both are loopback-only isolated instances with separate data volumes.
 - Phase 1/2 were committed in reviewable batches. Phase 3 is committed locally in batches; no production changes or remote pushes were made. This is not a release-ready theme.
 
@@ -29,7 +30,8 @@
 - All thirteen theme PHP files, fixture helpers, output-boundary tests and unchanged-runtime inventory passed.
 - Phase 4 native settings suites passed 18 cases in query mode and 18 in rewritten mode at root/subdirectory. Phase 1/2 and Phase 3 query regressions passed 38 cases, for 74 browser checks in this pass. Settings normalization, output boundaries, all 16 theme PHP syntax checks, shell syntax and 64 unchanged upstream file hashes passed. Original theme options and query-string permalink mode were restored.
 - Phase 5 native reading/comment suites passed 20 cases per permalink mode (40 total), with root/subdirectory and 360-pixel mobile coverage. All 18 theme PHP files, fixture syntax, settings/output-boundary tests, shell syntax and 64 upstream hashes passed. Phase 2 skeleton and Phase 3 query-mode content regressions passed 31 more checks, totaling 71 browser checks. Comment options and query-string permalink mode were restored.
-- See `PHASE5-REPORT.md`, `PHASE4-REPORT.md`, `PHASE1-REPORT.md`, `PHASE2-REPORT.md` and `PHASE3-REPORT.md` for results and exact untested scope.
+- Phase 6 passed four packaging verification groups and ten complete packaged lifecycle checks (root/query plus subdirectory/rewritten), plus 20 Phase 5 query-mode comment regressions after the cache-header change. All 19 PHP files, settings/adapter checks, shell syntax and diff whitespace passed. The final detached runner exited zero and removed its two temporary containers, volumes and network. A development ZIP/checksum is available under ignored `dist/`; source changes are committed locally in focused batches.
+- See `PHASE6-REPORT.md`, `PHASE5-REPORT.md`, `PHASE4-REPORT.md`, `PHASE1-REPORT.md`, `PHASE2-REPORT.md` and `PHASE3-REPORT.md` for results and exact untested scope.
 
 ## Outstanding decisions and blockers
 - The initial site-root metadata 404/timeout is resolved for local startup through a shared JavaScript traveller adapter. Final scene tests have no HTTP/request failures. A public metadata endpoint and cross-site portal behavior remain later integration work.
@@ -37,7 +39,7 @@
 - Firefox/WebKit and physical-device performance remain unverified. Phase 5 covers native submission, replies, moderation and closure in the isolated browser matrix. Theme settings are covered by Phase 4 native administration/browser checks. Root/subdirectory paths, native content visibility and both permalink modes are now validated. Both test instances have been restored to query-string mode.
 
 ## Next step
-Continue Phase 6 release preparation under new implementation scope: cache/version strategy, reproducible packaging and install/upgrade/rollback validation. Plan public metadata routing before cross-site portal support. Keep work confined to the isolated test instance until production activation is explicitly requested.
+Complete remaining release acceptance under new implementation scope: Firefox/WebKit/physical-device checks, measured transfer/performance budgets, target reverse-proxy/OPcache validation and supported plugin/version matrix. Plan public metadata routing before cross-site portal support. Keep work confined to the isolated test instance until production activation is explicitly requested.
 
 ## Commit organization
 - `00e47b0`: migration requirements, shared AI rules and integration analysis.
@@ -68,3 +70,11 @@ Each staged batch passed whitespace checks. No application behavior changed duri
 - The documentation commit containing this section records Phase 5 integration behavior and the 71-check verification report.
 
 Each staged batch passed whitespace checks. The final saved browser reports were checked again: 20 query-mode comment checks, 20 rewritten-mode comment checks, 12 skeleton regressions and 19 query-mode content regressions passed. No application behavior changed during this commit pass. Runtime data and local secrets remain untracked. No remote push or production changes were performed.
+
+## Phase 6 commits
+- `c34dad1`: content-addressed runtime assets and private/no-store HTML.
+- `5120398`: deterministic package builder, asset retention and installation guide.
+- `c84f450`: isolated package/lifecycle environment, integrity checks and native upgrade/rollback tests.
+- The documentation commit containing this section records Phase 6 architecture, results and remaining acceptance work.
+
+Each staged batch passed whitespace checks. The saved final reports were checked again: ten lifecycle checks, 20 comment regressions and four packaging groups passed; the development ZIP checksum still matches. No runtime, bundled installation guide or archive bytes changed during this commit pass. Ignored runtime data, credentials and ZIP artifacts remain untracked. No remote push or production modification was performed.

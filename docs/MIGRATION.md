@@ -54,6 +54,8 @@ Implemented in the isolated environment; see `READING-COMMENTS.md` and `PHASE5-R
 Acceptance: mobile users can read, search and comment; native validation and moderation continue to work.
 
 ## Phase 6: Validation and release preparation
+Development packaging, content-addressed assets and a disposable native install/upgrade/rollback workflow are implemented. See `INSTALLATION.md` and `PHASE6-REPORT.md`; complete release acceptance still depends on the unverified browser/performance/cache infrastructure matrix.
+
 - Verify the relevant integration matrix in AGENTS.md and document known plugin limitations.
 - Check startup/network failures, caching and performance; package an installable theme with license notices.
 - Prepare installation, upgrade and rollback instructions.

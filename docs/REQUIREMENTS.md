@@ -1,6 +1,6 @@
 # Product Requirements: Homecraft Typecho Theme
 
-Status: product baseline; Phase 5 reading/native-comment integration is implemented in isolated environments. Full release acceptance is not complete; see `PHASE5-REPORT.md`.
+Status: product baseline; Phase 6 development packaging and lifecycle validation are implemented in isolated environments. Full release acceptance is not complete; see `PHASE6-REPORT.md`.
 
 ## 1. Purpose and authority
 Deliver an installable Typecho theme that combines Homecraft's explorable 3D homepage with a complete, maintainable personal blog. Authors publish and moderate through the existing Typecho administration interface.
