@@ -5,4 +5,5 @@
 <?php if ($this->is('post')) $this->need('partials/post-meta.php'); ?>
 <div class="content"><?php $this->content(); ?></div>
 </article>
+<?php $this->need('partials/comments.php'); ?>
 </main>

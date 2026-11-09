@@ -1,3 +1,4 @@
+import { initReadingContent } from './reading-content.js';
 /** Progressive navigation enhancement; no scene imports or client-side router. */
 export function initReading(data) {
   const current = new URL(location.href);
@@ -15,5 +16,6 @@ export function initReading(data) {
       ? `Page ${data.pagination.currentPage} of ${data.pagination.totalPages}`
       : `第 ${data.pagination.currentPage} 页，共 ${data.pagination.totalPages} 页`;
   }
+  initReadingContent(data.site.language.startsWith('en'));
   document.body.dataset.readingView = data.view.kind;
 }

@@ -1,6 +1,7 @@
 <?php
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 require_once __DIR__ . '/inc/settings.php';
+require_once __DIR__ . '/inc/comments.php';
 
 function hcEscape($value): string
 {
