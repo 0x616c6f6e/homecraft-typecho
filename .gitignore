@@ -1,0 +1,24 @@
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.sql
+*.sql.gz
+
+# Dependencies and generated artifacts
+node_modules/
+/vendor/
+dist/
+build/
+coverage/
+.playwright/
+test-results/
+playwright-report/
+
+# Local runtime data
+work/
+.cache/
+*.log
+.DS_Store
