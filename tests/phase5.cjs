@@ -1,0 +1,134 @@
+const {chromium} = require('playwright');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+(async()=>{
+  const mode=process.argv[2]||'query';
+  assert.ok(['query','rewritten'].includes(mode));
+  const password=fs.readFileSync('/run/secrets/theme-dev-password','utf8').trim();
+  const browser=await chromium.launch({args:['--no-sandbox']});
+  const report={scope:'Phase 5 reading and native comments',mode,checks:[]};
+  const check=name=>report.checks.push({name,passed:true});
+  try {
+    for(const [name,base] of [['root','http://127.0.0.1:18094/'],['subdirectory','http://127.0.0.1:18095/journal/']]) {
+      const admin=await browser.newContext(); const editor=await admin.newPage();
+      await editor.goto(base+'admin/login.php');
+      await editor.locator('#name').fill('theme-dev');await editor.locator('#password').fill(password);
+      await Promise.all([editor.waitForURL(u=>u.pathname.includes('/admin/')&&!u.pathname.endsWith('login.php')),editor.locator('button[type=submit]').click()]);
+      await editor.goto(base+'admin/manage-pages.php?keywords=Phase5');
+      const row=editor.locator('tbody tr').filter({has:editor.locator('a', {hasText:'Phase5 reading'})});
+      const url=await row.locator('a:has(.i-exlink)').getAttribute('href');
+      const editURL=await row.locator('a:has(.i-edit)').getAttribute('href');
+      const protectedURL=await editor.locator('tbody tr').filter({has:editor.locator('a',{hasText:'Phase5 protected'})}).locator('a:has(.i-exlink)').getAttribute('href');
+      assert.equal(url.includes('/index.php/'),mode==='query');
+      const context=await browser.newContext({viewport:{width:name==='root'?1280:360,height:844}});
+      const page=await context.newPage();const errors=[],assets=[];
+      page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>assets.push(r.url()));
+      const goto=async(target=url)=>{await page.goto(target);await page.waitForFunction(()=>document.documentElement.dataset.enhanced==='true');await page.keyboard.press('Tab');};
+      await goto();
+      assert.equal(await page.locator('#comment-form').count(),1);
+      assert.equal(await page.locator('#comments > .comment-list > li').count(),2);
+      const next=await page.locator('#comments .pagination .next a').getAttribute('href');
+      await goto(next);assert.ok((await page.locator('#comments').innerText()).includes('Phase5 approved 3'));
+      await goto();
+      assert.equal(await page.locator('.table-scroll').count(),1);
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+      assert.equal(await page.locator('.content pre').evaluate(e=>e.scrollWidth>e.clientWidth),true);
+      assert.equal(await page.locator('.table-scroll').evaluate(e=>e.scrollWidth>e.clientWidth),true);
+      assert.equal(await page.locator('.content img').evaluate(e=>e.complete&&e.naturalWidth>0),true);
+      assert.equal(assets.some(u=>/\/(engine|world|vendor)\//.test(u)),false);
+      const copy=page.locator('.copy-code');assert.equal(await copy.count(),1);
+      await page.evaluate(()=>{window.COPIED='';Object.defineProperty(navigator,'clipboard',{value:{writeText:async text=>{window.COPIED=text;}},configurable:true});});
+      await copy.click();assert.equal(await page.evaluate(()=>window.COPIED),await page.locator('.content pre code').textContent());
+      await page.screenshot({path:`/results/phase5-${mode}-${name}-reading.png`,fullPage:true});
+      check(`${name}: wide content scrolls locally, native comments paginate and reading stays scene-free`);
+      const first=page.locator('#comments > .comment-list > li').first();
+      const parentId=(await first.getAttribute('id')).replace('comment-','');
+      await page.locator('#comment-text').fill('Draft survives reply cancellation');
+      await first.locator('.comment-reply a').first().click();
+      assert.equal(await page.locator('#comment-form input[name=parent]').inputValue(),parentId);
+      assert.equal(await page.locator('#comment-text').evaluate(e=>e===document.activeElement),true);
+      await page.locator('#cancel-comment-reply-link').click();
+      assert.equal(await page.locator('#comment-form input[name=parent]').count(),0);
+      assert.equal(await page.locator('#comment-text').inputValue(),'Draft survives reply cancellation');
+      check(`${name}: native reply/cancel preserves draft and keyboard focus`);
+      // Bypass browser validation to exercise native errors and browser Back recovery.
+      await page.locator('#comment-author').fill('Phase5 visitor');await page.locator('#comment-mail').fill('invalid-mail');
+      await page.locator('#comment-text').fill('Recoverable draft <unsafe-looking>');
+      await page.locator('#comment-form').evaluate(e=>e.noValidate=true);
+      await Promise.all([page.waitForNavigation(),page.locator('#comment-form button[type=submit]').click()]);
+      assert.ok((await page.locator('body').innerText()).includes('邮箱地址不合法'));
+      await page.goBack();
+      await page.waitForFunction(()=>document.documentElement.dataset.enhanced==='true');
+      assert.equal(await page.locator('#comment-author').inputValue(),'Phase5 visitor');
+      assert.equal(await page.locator('#comment-text').inputValue(),'Recoverable draft <unsafe-looking>');
+      assert.equal(await page.locator('#comment-form button[type=submit]').isEnabled(),true);
+      check(`${name}: server validation is visible and browser Back restores failed fields safely`);
+      const marker=`Phase5 pending ${mode} ${name} ${Date.now()}`;
+      await page.locator('#comment-mail').fill('visitor@example.invalid');await page.locator('#comment-text').fill(marker);
+      await Promise.all([page.waitForNavigation(),page.locator('#comment-form button[type=submit]').click()]);
+      assert.ok((await page.locator('.comment-awaiting-moderation').innerText()).includes('等待审核'));
+      const own=page.locator('.comment-body').filter({has:page.locator('.comment-content',{hasText:marker})});
+      const pendingId=(await own.getAttribute('id')).replace('comment-','');
+      const pendingURL=page.url();
+      const stranger=await browser.newContext(); const other=await stranger.newPage();
+      await other.goto(pendingURL);assert.equal((await other.locator('#comments').innerText()).includes(marker),false);
+      check(`${name}: pending submission is visible to its author and hidden from unrelated visitors`);
+      await editor.goto(base+'admin/manage-comments.php?status=waiting');
+      const approve=await editor.locator(`a.operate-approved[href*="coid=${pendingId}"]`).getAttribute('href');
+      const approval=await admin.request.post(approve,{headers:{referer:editor.url()},maxRedirects:0});
+      assert.ok([200,302,303].includes(approval.status()));
+      await other.reload();assert.equal((await other.locator('#comments').innerText()).includes(marker),true);
+      await page.reload();assert.equal(await page.locator('.comment-awaiting-moderation').count(),0);
+      check(`${name}: native administrator approval makes the same comment public`);
+      await goto();
+      await page.locator('#comments > .comment-list > li').first().locator('.comment-reply a').first().click();
+      const replyMarker=`Phase5 reply ${mode} ${name}`;
+      await page.locator('#comment-text').fill(replyMarker);
+      await Promise.all([page.waitForNavigation(),page.locator('#comment-form button[type=submit]').click()]);
+      assert.equal(await page.locator('.comment-children .comment-content').filter({hasText:replyMarker}).count(),1);
+      check(`${name}: submitted reply is attached to its native parent with moderation feedback`);
+      await goto(protectedURL);
+      assert.equal(await page.locator('#comment-form').count(),0);assert.equal(await page.locator('.comment-content').count(),0);
+      assert.equal((await page.locator('body').innerText()).includes('Phase5 approved'),false);
+      check(`${name}: password gate suppresses comment bodies and forms`);
+      // Close using native authoring; an already-open form must not bypass server permissions.
+      await goto();
+      const staleAction=await page.locator('#comment-form').getAttribute('action');
+      const token=await page.locator('#comment-form input[name="_"]').inputValue();
+      await editor.goto(editURL);await editor.locator('details').evaluateAll(es=>es.forEach(e=>e.open=true));
+      await editor.locator('#allowComment').uncheck();
+      await Promise.all([editor.waitForNavigation(),editor.locator('#btn-submit').click()]);
+      try {
+        const denied=await context.request.post(staleAction,{form:{author:'Stale reader',mail:'stale@example.invalid',text:'Must not be stored',_:token},headers:{referer:url}});
+        assert.equal(denied.status(),403);
+        await goto();assert.equal(await page.locator('#comment-form').count(),0);assert.equal(await page.locator('.comments-closed').count(),1);
+        assert.ok(await page.locator('.comment-content').count()>0);
+        check(`${name}: native closing preserves approved comments and rejects stale submissions`);
+      } finally {
+        await editor.goto(editURL);await editor.locator('details').evaluateAll(es=>es.forEach(e=>e.open=true));await editor.locator('#allowComment').check();
+        await Promise.all([editor.waitForNavigation(),editor.locator('#btn-submit').click()]);
+      }
+      const noJS=await browser.newContext({javaScriptEnabled:false,viewport:{width:360,height:844}});const plain=await noJS.newPage();await plain.goto(url);
+      assert.equal(await plain.locator('#comment-form').count(),1);assert.ok(await plain.locator('.comment-reply a').count()>0);
+      await plain.locator('.comment-reply a').first().click();assert.equal(new URL(plain.url()).searchParams.get('replyTo'),parentId);
+      assert.equal(new URL(await plain.locator('#comment-form').getAttribute('action')).searchParams.get('parent'),parentId);
+      assert.equal(await plain.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+      assert.equal((await plain.locator('#comments').innerText()).includes('提交评论需要 JavaScript'),true);
+      check(`${name}: no-JavaScript reading and native reply links remain available with anti-spam guidance`);
+      // The native logged-in branch must use the account identity, not guest fields.
+      await editor.goto(base+'?plain=1');
+      const postURL=await editor.locator('[data-recent-posts] li a').first().getAttribute('href');
+      await editor.goto(postURL);
+      assert.equal(await editor.locator('#comment-author').count(),0);
+      const ownerText=`Phase5 signed-in ${mode} ${name} ${Date.now()}`;
+      await editor.locator('#comment-text').fill(ownerText);
+      await Promise.all([editor.waitForNavigation(),editor.locator('#comment-form button[type=submit]').click()]);
+      assert.equal(await editor.locator('.comment-content').filter({hasText:ownerText}).count(),1);
+      assert.equal(await editor.locator('.comment-awaiting-moderation').count(),0);
+      check(`${name}: native signed-in identity and owner approval work on article comments`);
+      assert.deepEqual(errors,[]);
+      await noJS.close();await stranger.close();await context.close();await admin.close();
+    }
+  }catch(error){report.error=String(error.stack).split(password).join('[REDACTED]');process.exitCode=1;}
+  finally{await browser.close();fs.writeFileSync(`/results/phase5-${mode}.json`,JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));}
+})();
