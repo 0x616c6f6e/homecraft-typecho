@@ -4,12 +4,14 @@ A planned Typecho theme migration of [Homecraft](https://github.com/terryHu7/hom
 
 JavaScript is the primary stack. PHP is limited to Typecho integration, including theme templates, native data access, settings and comments.
 
-Phase 2 provides a reusable theme skeleton under `theme/`, a validated JavaScript integration layer, and isolated root/subdirectory Typecho environments. Full blog features, settings and comments are still in development; this is not a production-ready release.
+Phase 3 provides a JavaScript-first theme under `theme/` with public recent-post cards, native articles/archives/search/pagination, and isolated root/subdirectory Typecho environments. Theme settings and comments remain in development; this is not a production-ready release.
 
 - Shared AI instructions: `AGENTS.md`
 - Product requirements and acceptance matrix: `docs/REQUIREMENTS.md`
 - Migration scope and acceptance criteria: `docs/MIGRATION.md`
 - Selected integration and bootstrap contract: `docs/INTEGRATION.md`
+- Native content design and test commands: `docs/CONTENT-INTEGRATION.md`
+- Phase 3 content/visibility verification: `docs/PHASE3-REPORT.md`
 - Phase 2 skeleton verification: `docs/PHASE2-REPORT.md`
 - Phase 1 verification and known gaps: `docs/PHASE1-REPORT.md`
 - Local test environment: `docs/TEST-ENVIRONMENT.md`

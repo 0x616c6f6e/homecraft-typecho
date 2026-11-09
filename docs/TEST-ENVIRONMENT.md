@@ -49,7 +49,7 @@ Recheck versions:
 
 ## Browser validation
 
-The host has no Node.js or Chromium installation. `dev/browser.sh` runs a disposable official Playwright container with host networking, without publishing any port. It mounts only the supplied test script read-only and `work/testenv/browser-results` at `/results` for outputs; it does not mount the entire repository or password file. The pinned image is `mcr.microsoft.com/playwright@sha256:f1e7e01021efd65dd1a2c56064be399f3e4de00fd021ac561325f2bfbb2b837a` (v1.56.1-noble), with the matching `playwright@1.56.1` npm package installed inside the disposable container. npm access is required for each invocation.
+The host has no Node.js or Chromium installation. `dev/browser.sh` runs a disposable official Playwright container with host networking, without publishing any port. It mounts only the supplied test script read-only and `work/testenv/browser-results` at `/results` for outputs; by default it does not mount the entire repository or password file. Phase 3 authenticated tests can explicitly opt into a read-only mount of the synthetic development password using `HC_TEST_AUTH=1`. The pinned image is `mcr.microsoft.com/playwright@sha256:f1e7e01021efd65dd1a2c56064be399f3e4de00fd021ac561325f2bfbb2b837a` (v1.56.1-noble), with the matching `playwright@1.56.1` npm package installed inside the disposable container. npm access is required for each invocation.
 
 ```sh
 ./dev/browser.sh tests/phase1.cjs
@@ -82,3 +82,9 @@ Final integration results are recorded in `PHASE1-REPORT.md`; the initial smoke 
 This independent Compose project (`homecraft-theme-subdir`) serves `http://127.0.0.1:18095/journal/` using the same pinned Typecho image and separate SQLite/application volume/network. It uses only synthetic data and a read-only theme mount. The disposable container configures an Apache Alias and prefix-aware rewrite target; it does not change the host reverse proxy or production site. Both instances must be running for the Phase 2 test. An SSH tunnel uses `-L 18095:127.0.0.1:18095` to access this instance from another computer.
 
 Theme skeleton tests are in `PHASE2-REPORT.md`. For adapter output safety checks run `./dev/run.sh exec -T typecho php < tests/adapter.php`. To discard this instance's synthetic data only, use `./dev/run-subdirectory.sh down -v`.
+
+## Phase 3 native-content fixtures
+
+See `CONTENT-INTEGRATION.md` for the complete fixture and query/rewritten-mode test commands. `dev/seed-content.php` creates richer synthetic content and sets five-post pagination; it leaves normal Typecho authoring and access control in place. `tests/phase3.cjs` uses real login, password-unlock and draft/publish/private actions. Authenticated tests explicitly opt in to a transient read-only mount of the generated test administrator password; no cookies or passwords are stored in versioned reports.
+
+Both instances are restored to `rewrite=0` after the Phase 3 matrix. Native lifecycle-test articles end private. The original demonstration post remains present but is older than fixture articles; Phase 1/2 smoke tests use its known native fixture permalink rather than assuming it is the first list entry.

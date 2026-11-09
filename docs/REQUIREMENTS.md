@@ -1,6 +1,6 @@
 # Product Requirements: Homecraft Typecho Theme
 
-Status: product baseline; a Phase 1 proof of concept exists. Full release acceptance is not complete; see `PHASE1-REPORT.md`.
+Status: product baseline; Phase 3 native-content integration is validated in isolated environments. Full release acceptance is not complete; see `PHASE3-REPORT.md`.
 
 ## 1. Purpose and authority
 Deliver an installable Typecho theme that combines Homecraft's explorable 3D homepage with a complete, maintainable personal blog. Authors publish and moderate through the existing Typecho administration interface.

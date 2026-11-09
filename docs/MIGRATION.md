@@ -29,6 +29,8 @@ Completed in the isolated tested environment; see `PHASE2-REPORT.md`. Shared tem
 Acceptance: Typecho recognizes and enables the theme in the test instance; root and subdirectory resource paths work.
 
 ## Phase 3: Blog content
+Completed in the isolated root/subdirectory environments for query-string and rewritten permalinks; see `PHASE3-REPORT.md` and `CONTENT-INTEGRATION.md`. Native publication/visibility changes and public-summary filtering were exercised through real authoring/password workflows.
+
 - Connect Typecho-native post, page, taxonomy, search and pagination data through the thin PHP adapter.
 - Implement frontend presentation, state and enhanced navigation in JavaScript; preserve native URLs and fallback content.
 - Keep stable native permalinks and server-rendered content.
