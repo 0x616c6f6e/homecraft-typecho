@@ -12,3 +12,4 @@ body.hc-fallback { overflow: auto; }
 .recent-posts a { color: inherit; font-weight: 600; overflow-wrap: anywhere; }
 .recent-posts time { display: block; font-size: .8em; opacity: .8; }
 .recent-posts li p { font-size: .9em; margin-top: .25rem; }
+.brand-logo { object-fit: contain; flex: none; }

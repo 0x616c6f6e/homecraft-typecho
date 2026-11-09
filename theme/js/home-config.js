@@ -1,9 +1,10 @@
 import { readBootstrap } from './bootstrap.js';
+import { validSkin } from './skin.js';
 const { scene } = readBootstrap();
 // Explicit projection: PHP does not supply executable module source.
 export default {
   name: scene.name,
-  skin: scene.skin,
+  skin: await validSkin(scene.skin),
   languages: scene.languages,
   weather: scene.weather,
   dock: scene.dock,

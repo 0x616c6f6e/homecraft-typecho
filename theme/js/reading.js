@@ -11,7 +11,9 @@ export function initReading(data) {
   // Enhance page-position text without replacing native links or filtering results.
   const status = document.querySelector('[data-page-position]');
   if (status && data.pagination) {
-    status.textContent = `第 ${data.pagination.currentPage} 页，共 ${data.pagination.totalPages} 页`;
+    status.textContent = data.site.language.startsWith('en')
+      ? `Page ${data.pagination.currentPage} of ${data.pagination.totalPages}`
+      : `第 ${data.pagination.currentPage} 页，共 ${data.pagination.totalPages} 页`;
   }
   document.body.dataset.readingView = data.view.kind;
 }

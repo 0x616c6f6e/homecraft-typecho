@@ -11,8 +11,8 @@
 </article>
 <?php endwhile; ?>
 <p class="page-position" data-page-position aria-live="polite"></p>
-<nav class="pagination" aria-label="文章分页"><?php $this->pageNav('上一页', '下一页'); ?></nav>
+<nav class="pagination" aria-label="文章分页"><?php $this->pageNav(hcText('上一页','Previous'), hcText('下一页','Next')); ?></nav>
 <?php else: ?>
-<p><?php echo $this->is('search') ? '没有找到匹配的文章，请尝试其他关键词。' : '还没有文章。'; ?></p>
+<p><?php echo $this->is('search') ? hcText('没有找到匹配的文章，请尝试其他关键词。','No matching posts. Try another search.') : hcText('还没有文章。','No posts yet.'); ?></p>
 <?php endif; ?>
 </main>

@@ -21,6 +21,14 @@ export function validateBootstrap(data) {
     || !string(data.site.language) || !webURL(data.site.url)) invalid();
   if (!object(data.urls) || !['home', 'blog', 'feed', 'themeBase'].every(key => webURL(data.urls[key]))
     || !data.urls.themeBase.endsWith('/')) invalid();
+  if (data.profile !== undefined && (!object(data.profile)
+    || !['name','introduction','logo','favicon'].every(key => string(data.profile[key]))
+    || !['logo','favicon'].every(key => data.profile[key] === '' || webURL(data.profile[key]))
+    || !Array.isArray(data.profile.links) || !data.profile.links.every(link => object(link)
+      && ['github','blog','x'].includes(link.id) && string(link.name) && webURL(link.url)))) invalid();
+  if (data.pages !== undefined && (!object(data.pages)
+    || !['about','guestbook'].every(key => data.pages[key] === null
+      || (object(data.pages[key]) && string(data.pages[key].title) && webURL(data.pages[key].url))))) invalid();
   const scene = data.scene;
   if (!object(scene) || !string(scene.name) || !string(scene.skin)
     || (scene.skin !== '' && !webURL(scene.skin))

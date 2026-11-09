@@ -18,6 +18,7 @@ async function start() {
 
 start().catch(error => {
   // Server-rendered links/content remain available even with invalid config.
-  if (document.getElementById('world')) showFallback('配置加载失败，可以直接阅读文章');
+  if (document.getElementById('world')) showFallback(document.documentElement.lang.startsWith('en')
+    ? 'Configuration could not load. You can read the articles.' : '配置加载失败，可以直接阅读文章');
   console.error('Homecraft integration could not start:', error);
 });

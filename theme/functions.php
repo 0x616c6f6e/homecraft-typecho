@@ -1,5 +1,6 @@
 <?php
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
+require_once __DIR__ . '/inc/settings.php';
 
 function hcEscape($value): string
 {
@@ -28,7 +29,7 @@ function hcPublicPosts(): array
     static $summaries;
     if (isset($summaries)) return $summaries;
     require_once __DIR__ . '/inc/public-posts.php';
-    $posts = HomecraftPublicPosts::alloc(['pageSize' => 10]);
+    $posts = HomecraftPublicPosts::alloc(['pageSize' => hcSettings()['recentCount']]);
     $summaries = [];
     while ($posts->next()) {
         $summaries[] = [
@@ -61,17 +62,24 @@ function hcBootstrap($archive): array
 {
     $options = \Utils\Helper::options();
     $kind = hcViewKind($archive);
+    $settings = hcSettings();
+    $mapped = hcMappedPages($settings);
+    $dock = ['blog','about'];
+    if ($mapped['guestbook']) $dock[] = 'mailbox';
+    $dock[] = 'phone';
     return [
         'schemaVersion' => 1,
-        'view' => ['kind' => $kind, 'sceneEnabled' => $kind === 'home'],
-        'site' => ['title' => (string) $options->title, 'description' => (string) $options->description, 'url' => (string) $options->siteUrl, 'language' => 'zh-CN'],
+        'view' => ['kind' => $kind, 'sceneEnabled' => $kind === 'home' && $settings['homepage'] === 'scene'],
+        'site' => ['title' => (string) $options->title, 'description' => (string) $options->description, 'url' => (string) $options->siteUrl, 'language' => $settings['language'] === 'en' ? 'en' : 'zh-CN'],
         'urls' => [
             'themeBase' => rtrim($options->themeUrl, '/') . '/',
             'home' => (string) $options->siteUrl,
             'blog' => $options->frontArchive ? \Typecho\Router::url('archive', [], $options->index) : (string) $options->siteUrl,
             'feed' => (string) $options->feedUrl,
         ],
-        'scene' => ['name' => (string) $options->title, 'skin' => '', 'languages' => ['zh'], 'weather' => null, 'dock' => ['blog', 'about', 'phone'], 'mailbox' => ['endpoint' => '', 'email' => '', 'turnstileSitekey' => ''], 'badge' => true],
+        'profile' => ['name'=>$settings['name'],'introduction'=>$settings['introduction'] !== '' ? $settings['introduction'] : (string)$options->description,'logo'=>$settings['logo'],'favicon'=>$settings['favicon'],'links'=>$settings['links']],
+        'pages' => $mapped,
+        'scene' => ['name' => $settings['name'], 'skin' => $settings['skin'], 'languages' => [$settings['language']], 'weather' => $settings['weather'], 'dock' => $dock, 'mailbox' => ['endpoint' => '', 'email' => '', 'turnstileSitekey' => ''], 'badge' => true],
         'posts' => $kind === 'home' ? hcPublicPosts() : [],
         'pagination' => hcPagination($archive),
     ];
@@ -81,6 +89,6 @@ function hcBootstrap($archive): array
 function hcPageTitle($archive, array $data): string
 {
     if ($data['view']['kind'] === 'home') return $data['site']['title'];
-    if ($data['view']['kind'] === 'notFound') return '页面未找到';
-    return (string) ($archive->getArchiveTitle() ?: '文章列表');
+    if ($data['view']['kind'] === 'notFound') return hcText('页面未找到','Page not found');
+    return (string) ($archive->getArchiveTitle() ?: hcText('文章列表','Posts'));
 }
