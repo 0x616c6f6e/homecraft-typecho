@@ -11,13 +11,17 @@ if docker info >/dev/null 2>&1; then
 else
   docker_command=(sudo -n docker)
 fi
+release_mount=()
+if [ "${HC_TEST_RELEASE:-0}" = 1 ]; then
+  release_mount=(-v "$PWD/work/release-test:/release-workspace")
+fi
 auth_mount=()
 if [ "${HC_TEST_AUTH:-0}" = 1 ]; then
   test -f work/testenv/admin-password
   auth_mount=(-v "$PWD/work/testenv/admin-password:/run/secrets/theme-dev-password:ro")
 fi
 "${docker_command[@]}" run --rm --network host --ipc private --shm-size 1g \
-  "${auth_mount[@]}" \
+  "${auth_mount[@]}" "${release_mount[@]}" \
   -v "$script:/browser-test.cjs:ro" \
   -v "$PWD/work/testenv/browser-results:/results" \
   -w /results "$image" bash -c \

@@ -13,7 +13,7 @@ if [ ! -f /app/config.inc.php ]; then
   exit 1
 fi
 unset TYPECHO_USER_PASSWORD TYPECHO_INSTALL
-php /dev-tools/seed.php
+if [ "${HC_DEV_RELEASE_TEST:-0}" != 1 ]; then php /dev-tools/seed.php; fi
 if [ "${HC_DEV_SUBDIRECTORY:-}" = journal ]; then
   mkdir -p /var/www/theme-dev-empty
   cat > /etc/apache2/sites-available/000-default.conf <<'APACHE'

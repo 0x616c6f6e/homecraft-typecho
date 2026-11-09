@@ -1,0 +1,42 @@
+name: homecraft-release-test
+x-release: &release
+  image: joyqi/typecho@sha256:657d44a8b20263095b5136562edfc6e4ec4f48ea1296337d4c16b48fabc12558
+  entrypoint: ["/bin/bash", "/dev-tools/release-start.sh"]
+  volumes:
+    - root-app:/app
+    - ./:/dev-tools:ro
+    - ../work/release-test:/release-workspace:ro
+    - ../work/testenv/admin-password:/run/secrets/admin-password:ro
+  networks: [release-test]
+x-env: &env
+  TYPECHO_INSTALL: "1"
+  TYPECHO_DB_ADAPTER: Pdo_SQLite
+  TYPECHO_DB_FILE: /app/usr/theme-dev.db
+  TYPECHO_DB_PREFIX: typecho_
+  TYPECHO_USER_NAME: theme-dev
+  TYPECHO_USER_MAIL: theme-dev@example.invalid
+  HC_DEV_RELEASE_TEST: "1"
+services:
+  root:
+    <<: *release
+    environment:
+      <<: *env
+      TYPECHO_SITE_URL: http://127.0.0.1:18096
+    ports: ["127.0.0.1:18096:80"]
+  subdirectory:
+    <<: *release
+    environment:
+      <<: *env
+      TYPECHO_SITE_URL: http://127.0.0.1:18097/journal
+      HC_DEV_SUBDIRECTORY: journal
+    ports: ["127.0.0.1:18097:80"]
+    volumes:
+      - subdir-app:/app
+      - ./:/dev-tools:ro
+      - ../work/release-test:/release-workspace:ro
+      - ../work/testenv/admin-password:/run/secrets/admin-password:ro
+volumes:
+  root-app:
+  subdir-app:
+networks:
+  release-test:

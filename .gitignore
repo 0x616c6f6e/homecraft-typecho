@@ -22,3 +22,7 @@ work/
 .cache/
 *.log
 .DS_Store
+
+# Python packaging-test bytecode
+__pycache__/
+*.py[cod]
