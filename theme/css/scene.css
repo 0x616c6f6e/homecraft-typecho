@@ -1,0 +1,8 @@
+.reading-entry { position: fixed; top: max(.75rem, env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); z-index: 100; display: flex; gap: .75rem; align-items: center; max-width: calc(100% - 1.5rem); padding: .5rem .8rem; background: #f6f5f0; color: #24342d; border-radius: .5rem; font: 14px/1.5 system-ui, sans-serif; }
+.reading-entry a { color: #15543b; white-space: nowrap; text-decoration: underline; }
+.reading-entry a:focus-visible { outline: 3px solid #be7a19; outline-offset: 3px; }
+#scene-status { font-size: 12px; }
+body.hc-fallback { overflow: auto; }
+.hc-fallback #world, .hc-fallback #hud, .hc-fallback #loading { display: none !important; }
+.hc-fallback #pages { display: block !important; }
+@media (max-width: 480px) { .reading-entry { width: max-content; flex-wrap: wrap; justify-content: center; } }
