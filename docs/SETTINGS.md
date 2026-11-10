@@ -9,6 +9,7 @@ Open Typecho Administration → Appearance → Configure theme. Settings use the
 | Logo / favicon | Optional absolute HTTP(S) image URLs. |
 | Language | Chinese (default) or English interface labels; does not translate content or the native administrator UI. |
 | Recent posts | Integer 1–20, default 10; the public-content filter applies before the limit. |
+| Scene buildings | Source show-home (default), cottage/library/watchtower village, or original starter island. The previous village remains available. |
 | Homepage | Scene (default), or reading. Reading redirects to the native front archive when enabled; otherwise renders the public summaries without loading the engine. |
 | About page | Optional published, released, unprotected native page, excluding the scene template. |
 | Guestbook page | Same eligibility, plus comments enabled. The scene opens the native page; it is not the upstream email mailbox. Native comments and replies are rendered on the selected reading page; see READING-COMMENTS.md. |

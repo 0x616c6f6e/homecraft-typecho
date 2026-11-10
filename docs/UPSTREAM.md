@@ -13,3 +13,8 @@ No upstream engine, world or vendor source modifications were made for this proo
 The local upstream clone under ignored `work/frontend/upstream/` is only an analysis reference. Future upgrades must compare this recorded revision and inventory, preserve notices and isolate integration changes.
 
 Packaged development releases relocate static runtime directories together under `static/<assetId>/`. Source checkout paths above remain unchanged, and the packaging test verifies every upstream inventoried byte at its packaged location (the MIT LICENSE stays at package root). The separate immutable graph includes integration modules without rewriting engine/world/vendor source. Retained older graphs are verified against their release manifests.
+
+## Show-home architecture
+The owner's request to reproduce the reference architecture selects the upstream `examples/terry-home/world/` scene at the same pinned revision `df8033aab87569d2779e1c2f74564183527282f7`. Twelve modules are imported under `theme/world/show-home/`; original and adapted hashes are in SHOW-HOME-FILES.json. Homecraft's MIT notice and author attribution remain. Main engine/starter/vendor files and their original inventory are unchanged.
+
+The building shell, pool, court, loft/stairs, garage, furniture, exterior stairs, mountain and pier reuse the example implementation. paint.js substitutes neutral HOME/HC labels; furnish.js substitutes generic symbol art for certificate imagery. The original person's skin, biography, contacts, mailbox service and project links are not copied. Thin JS wrappers map the work desk to native post summaries and keep mailbox visibility conditional on a Typecho guestbook. See SHOW-HOME.md for tested interaction scope.

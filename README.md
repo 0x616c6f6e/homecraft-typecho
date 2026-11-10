@@ -4,6 +4,8 @@ A development Typecho theme migration of [Homecraft](https://github.com/terryHu7
 
 JavaScript is the primary stack. PHP is limited to Typecho integration, including theme templates, native data access, settings and comments.
 
+The default scene reproduces the upstream show-home architecture: house, court, pool, loft, garage and mountain, with native F-key interaction points. The earlier cottage/library/watchtower village remains selectable through theme settings. See `docs/SHOW-HOME.md` and `docs/BUILDINGS.md`.
+
 The development theme under `theme/` includes a 3D homepage, public recent-post cards, native blog discovery/comments and responsive reading. Native settings configure identity, skin, language, weather, links and page mappings. Phase 6 adds deterministic packaging and content-addressed assets with isolated lifecycle tests. Full production release acceptance remains incomplete.
 
 - Shared AI instructions: `AGENTS.md`
