@@ -31,6 +31,7 @@ export function validateBootstrap(data) {
     || !['about','guestbook'].every(key => data.pages[key] === null
       || (object(data.pages[key]) && string(data.pages[key].title) && webURL(data.pages[key].url))))) invalid();
   const scene = data.scene;
+  if (object(scene) && scene.preset !== undefined && !['show-home','village','starter'].includes(scene.preset)) invalid();
   if (!object(scene) || !string(scene.name) || !string(scene.skin)
     || (scene.skin !== '' && !webURL(scene.skin))
     || !Array.isArray(scene.languages) || scene.languages.length === 0

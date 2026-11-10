@@ -51,6 +51,7 @@ function hcNormalizeSettings(array $raw, string $siteTitle): array
         'introduction'=>hcSettingText($raw['hcIntroduction'] ?? '',2000),
         'skin'=>hcWebUrl($raw['hcSkin'] ?? ''), 'logo'=>hcWebUrl($raw['hcLogo'] ?? ''), 'favicon'=>hcWebUrl($raw['hcFavicon'] ?? ''),
         'language'=>$language, 'recentCount'=>$count,
+        'world'=>in_array($raw['hcWorld'] ?? '', ['show-home','village','starter'], true) ? $raw['hcWorld'] : 'show-home',
         'homepage'=>($raw['hcHomepage'] ?? '') === 'reading' ? 'reading' : 'scene',
         'aboutPageId'=>$pageId($raw['hcAboutPage'] ?? 0), 'guestbookPageId'=>$pageId($raw['hcGuestbookPage'] ?? 0),
         'links'=>$links, 'weather'=>hcWeatherSettings($raw),
@@ -62,7 +63,7 @@ function hcSettings(): array
     static $settings;
     if (isset($settings)) return $settings;
     $options = \Utils\Helper::options();
-    $keys = ['hcName','hcIntroduction','hcSkin','hcLogo','hcFavicon','hcLanguage','hcRecentCount','hcHomepage','hcAboutPage','hcGuestbookPage','hcGithubUrl','hcWebsiteUrl','hcXUrl','hcWeatherEnabled','hcWeatherCity','hcWeatherCityEn','hcWeatherLatitude','hcWeatherLongitude','hcWeatherTimezone'];
+    $keys = ['hcWorld','hcName','hcIntroduction','hcSkin','hcLogo','hcFavicon','hcLanguage','hcRecentCount','hcHomepage','hcAboutPage','hcGuestbookPage','hcGithubUrl','hcWebsiteUrl','hcXUrl','hcWeatherEnabled','hcWeatherCity','hcWeatherCityEn','hcWeatherLatitude','hcWeatherLongitude','hcWeatherTimezone'];
     $raw = [];
     foreach ($keys as $key) $raw[$key] = $options->{$key};
     return $settings = hcNormalizeSettings($raw, (string)$options->title);
@@ -116,6 +117,7 @@ function themeConfig($form)
     }
     $select('hcLanguage','界面语言',['zh'=>'中文','en'=>'English'],'zh');
     $text('hcRecentCount','首页文章数量','10','1–20；不影响 Typecho 原生归档每页数量。')->addRule('required','请填写 1–20 的整数。')->addRule(static fn($v)=>is_scalar($v)&&ctype_digit((string)$v)&&(int)$v>=1&&(int)$v<=20,'请填写 1–20 的整数。');
+    $select('hcWorld','场景建筑',['show-home'=>'原项目示范住宅','village'=>'木屋、书屋与瞭望塔','starter'=>'原始空岛'],'show-home');
     $select('hcHomepage','首页展示',['scene'=>'3D 场景','reading'=>'文章阅读（转到原生文章列表）'],'scene');
     $pageOptions = ['0'=>'不关联页面']; $guestOptions = $pageOptions;
     foreach (hcAvailablePages() as $id=>$page) {

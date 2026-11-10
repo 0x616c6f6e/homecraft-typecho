@@ -26,6 +26,18 @@ $data = hcBootstrap($this);
 <article class="page" data-station="about"><h2><?php echo hcText('关于','About'); ?></h2><div class="placeholder-card"><p><?php echo nl2br(hcEscape($data['profile']['introduction'])); ?></p>
 <?php if ($data['pages']['about']): ?><a class="mc-button" href="<?php echo hcEscape($data['pages']['about']['url']); ?>"><?php echo hcText('阅读关于页面','Read about page'); ?></a><?php endif; ?></div></article>
 <?php if ($data['pages']['guestbook']): ?><article class="page" data-station="mailbox"><h2><?php echo hcText('留言','Guestbook'); ?></h2><div class="placeholder-card"><a class="mc-button" href="<?php echo hcEscape($data['pages']['guestbook']['url']); ?>"><?php echo hcText('打开留言页面','Open guestbook'); ?></a></div></article><?php endif; ?>
+<?php if ($data['scene']['preset'] === 'show-home'): ?>
+<?php foreach ([
+    'court'=>[hcText('篮球场','Basketball court'),hcText('在球场上投篮，或走近篮筐练习。','Shoot hoops or approach the basket to practise.')],
+    'writing'=>[hcText('阁楼卧室','Loft bedroom'),hcText('沿楼梯到达阁楼；这里也可以打开文章列表。','Take the stairs to the loft, or open the post archive here.')],
+    'lab'=>[hcText('车库','Garage'),hcText('示范住宅的车库与模型汽车。','The showcase garage and model car.')],
+    'coffee'=>[hcText('咖啡吧','Coffee bar'),hcText('靠近吧台休息，继续浏览博客。','Take a break at the counter and explore the blog.')],
+    'pool'=>[hcText('泳池','Pool'),hcText('可以下水游泳，并从泳池扶梯返回露台。','Swim in the pool and return to the terrace using its ladder.')],
+    'mountain'=>[hcText('后山','Mountain'),hcText('沿后山步道探索山顶景观。','Explore the mountain paths and viewpoints.')],
+] as $station=>$info): ?>
+<article class="page" data-station="<?php echo $station; ?>"><h2><?php echo $info[0]; ?></h2><div class="placeholder-card"><p><?php echo $info[1]; ?></p><a class="mc-button" href="<?php echo hcEscape($data['urls']['blog']); ?>"><?php echo hcText('阅读文章','Read posts'); ?></a></div></article>
+<?php endforeach; ?>
+<?php endif; ?>
 <article class="page" data-station="contact"><h2><?php echo hcText('联系','Contact'); ?></h2>
 <?php if (!$data['profile']['links']): ?><p><?php echo hcText('联系方式尚未配置。','No contact links configured.'); ?></p><?php endif; ?>
 <ul class="contact"><?php foreach ($data['profile']['links'] as $link): ?><li data-app="<?php echo hcEscape($link['id']); ?>"><span><?php echo hcEscape($link['name']); ?></span><a href="<?php echo hcEscape($link['url']); ?>" rel="noopener noreferrer"><?php echo hcEscape($link['url']); ?></a><p></p></li><?php endforeach; ?></ul></article>

@@ -26,7 +26,8 @@ $documentTitle = $data['view']['kind'] === 'home' ? $pageTitle : $pageTitle . ' 
 $imports = ['imports' => [
     'three' => $base . 'vendor/three/three.module.min.js',
     '@engine/' => $base . 'engine/', '@world/' => $base . 'world/',
-    '@world/layout.js' => $base . 'js/world-layout.js',
+    '@world/build.js' => $base . ($data['scene']['preset'] === 'show-home' ? 'js/show-home-build.js' : ($data['scene']['preset'] === 'starter' ? 'world/build.js' : 'js/world-build.js')),
+    '@world/layout.js' => $base . ($data['scene']['preset'] === 'show-home' ? 'js/show-home-layout.js' : 'js/world-layout.js'),
     '@config' => $base . 'js/home-config.js',
     $base . 'engine/traveller.js' => $base . 'js/traveller.js',
 ]];

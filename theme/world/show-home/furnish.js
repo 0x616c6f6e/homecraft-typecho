@@ -304,7 +304,7 @@ export function furnish({ layer }) {
   B.box(7.7, 0, -11.6, 3.4, 0.65, 0.6, L.wood); foot(7.7, -11.6, 3.5, 0.7);
   for (const [x, kind] of [[6.5, 'cert'], [7.7, 'diploma'], [8.9, 'jersey']]) {
     B.box(x, 1.7, -11.9, 0.95, 1.2, 0.08, L.wood);
-    const art = kind === 'jersey' ? paint(80, 104, P.paintJersey) : paint(40, 52, (ctx, w, h) => P.paintCertificate(ctx, w, h, { kind }));
+    const art = kind === 'jersey' ? paint(80, 104, P.paintJersey) : paint(40, 52, P.paintSymbolsScreen);
     plane(0.81, 1.06, art, x, 2.3, -11.85);
     B.box(x, 3.13, -11.74, .74, .07, .14, L.steel);
     B.box(x, 3.115, -11.65, .65, .018, .1, L.light(0xffe9c9));

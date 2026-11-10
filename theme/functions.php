@@ -82,7 +82,7 @@ function hcBootstrap($archive): array
         ],
         'profile' => ['name'=>$settings['name'],'introduction'=>$settings['introduction'] !== '' ? $settings['introduction'] : (string)$options->description,'logo'=>$settings['logo'],'favicon'=>$settings['favicon'],'links'=>$settings['links']],
         'pages' => $mapped,
-        'scene' => ['name' => $settings['name'], 'skin' => $settings['skin'], 'languages' => [$settings['language']], 'weather' => $settings['weather'], 'dock' => $dock, 'mailbox' => ['endpoint' => '', 'email' => '', 'turnstileSitekey' => ''], 'badge' => true],
+        'scene' => ['preset'=>$settings['world'], 'name' => $settings['name'], 'skin' => $settings['skin'], 'languages' => [$settings['language']], 'weather' => $settings['weather'], 'dock' => $dock, 'mailbox' => ['endpoint' => '', 'email' => '', 'turnstileSitekey' => ''], 'badge' => true],
         'posts' => $kind === 'home' ? hcPublicPosts() : [],
         'pagination' => hcPagination($archive),
     ];
