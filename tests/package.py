@@ -44,7 +44,7 @@ source=work/'source-b'
 if source.exists(): shutil.rmtree(source)
 shutil.copytree(root/'theme',source)
 (source/'js/reading-content.js').write_text((source/'js/reading-content.js').read_text()+'\n// Synthetic upgrade cache marker.\n')
-(source/'index.php').write_text((source/'index.php').read_text().replace('0.0.6-dev','0.0.6-upgrade-test'))
+(source/'index.php').write_text((source/'index.php').read_text().replace(first['version'],first['version']+'-upgrade-test'))
 binfo=build('--theme-dir','/repo/work/release-test/source-b','--retain','/repo/work/release-test/releases/A/homecraft-typecho')
 b,rb=unpack(binfo,'B')
 assert ra['assetId']!=rb['assetId']
