@@ -1,0 +1,10 @@
+{
+  "revision": "df8033aab87569d2779e1c2f74564183527282f7",
+  "files": {
+    "engine/world/player.js": {
+      "upstreamSha256": "e632844e222169004d0ad55c72317bc80fb8609285fabd110ed2f1ce2938902d",
+      "localSha256": "21c757de66ba5cebd36fa887994151312ae3ddad76e7e6d47dc7e993d6aeb444",
+      "reason": "Move the pool ladder landing 0.3 m farther onto the deck so the navigation grid and player radius clear its footprint."
+    }
+  }
+}

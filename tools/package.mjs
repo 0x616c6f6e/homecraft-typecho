@@ -21,7 +21,12 @@ for(const file of walk(source)) {
   if(rel.split(path.sep).some(p=>['.git','node_modules','work'].includes(p)) || /(^|[\/])\.env|\.(pem|key|sql|log)$/i.test(rel) || rel.includes('config.inc.php')) throw Error('Unexpected private/runtime input: '+rel);
 }
 const inventory=JSON.parse(fs.readFileSync(new URL('../docs/UPSTREAM-FILES.json',import.meta.url),'utf8'));
-for(const [file,digest] of Object.entries(inventory.files))if(hash(fs.readFileSync(path.join(source,file)))!==digest)throw Error('Upstream inventory mismatch: '+file);
+const patches=JSON.parse(fs.readFileSync(new URL('../docs/UPSTREAM-PATCHES.json',import.meta.url),'utf8'));
+if(patches.revision!==inventory.revision)throw Error('Upstream patch revision mismatch');
+for(const [file,patch] of Object.entries(patches.files)) {
+  if(!inventory.files[file] || inventory.files[file]!==patch.upstreamSha256 || !/^[a-f0-9]{64}$/.test(patch.localSha256))throw Error('Invalid upstream patch record: '+file);
+}
+for(const [file,digest] of Object.entries(inventory.files))if(hash(fs.readFileSync(path.join(source,file)))!==(patches.files[file]?.localSha256||digest))throw Error('Upstream inventory mismatch: '+file);
 for(const dir of ['js','css','engine','world','vendor','assets']) {
   for(const file of walk(path.join(source,dir)))assets.set(path.relative(source,file).split(path.sep).join('/'),fs.readFileSync(file));
 }
@@ -48,7 +53,7 @@ if(retain) {
   }
 }
 const root=new URL('../',import.meta.url).pathname;
-for(const name of ['UPSTREAM.md','SETTINGS.md','READING-COMMENTS.md','INSTALLATION.md','BUILDINGS.md','SHOW-HOME.md','SHOW-HOME-FILES.json'])files.set('docs/'+name,fs.readFileSync(path.join(root,'docs',name)));
+for(const name of ['UPSTREAM.md','UPSTREAM-FILES.json','UPSTREAM-PATCHES.json','SETTINGS.md','READING-COMMENTS.md','INSTALLATION.md','BUILDINGS.md','SHOW-HOME.md','SHOW-HOME-FILES.json'])files.set('docs/'+name,fs.readFileSync(path.join(root,'docs',name)));
 const manifest={version,assetId,files:Object.fromEntries([...files].filter(([n])=>n.startsWith('static/')).sort().map(([n,d])=>[n,hash(d)]))};
 files.set('release.json',Buffer.from(JSON.stringify(manifest,null,2)+'\n'));
 // ZIP: fixed DOS epoch, stable order, UTF-8 paths, Unix 0644 files, no host metadata.

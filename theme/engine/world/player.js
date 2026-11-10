@@ -209,7 +209,8 @@ export function createPlayer({ avatar, nav, grid = null, ground = null, onArrive
   // no deck (the sea side). Near the ladder the player goes up it, between its rails.
   function exitAt(x, z, ox, oz) {
     if (oz < 0 && x > POOL_LADDER.x0 - 0.45 && x < POOL_LADDER.x1 + 0.45) {
-      const mid = (POOL_LADDER.x0 + POOL_LADDER.x1) / 2, out = { x: mid, z: POOL.z0 - 0.9 };
+      // Clear the ladder footprint after navigation-cell rounding and body radius.
+      const mid = (POOL_LADDER.x0 + POOL_LADDER.x1) / 2, out = { x: mid, z: POOL.z0 - 1.2 };
       return nav.canStand(out.x, out.z) ? { edge: { x: mid, z: POOL_LADDER.z - 0.05 }, out, ox, oz } : null;
     }
     const out = { x: x + ox * 0.55, z: z + oz * 0.55 };
