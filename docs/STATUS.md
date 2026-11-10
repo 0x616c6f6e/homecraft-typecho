@@ -12,6 +12,7 @@
 - Phase 6 (`0.0.6-dev`) adds deterministic development packaging, content-addressed assets, HTML/static cache boundaries and a disposable native lifecycle matrix. Phase 6 is recorded in separate local runtime, build, test and documentation commits. See `INSTALLATION.md` and `PHASE6-REPORT.md`; full production release acceptance is still incomplete.
 - Village scenery (`0.0.7-dev`) adds an enterable cottage, library and watchtower with connected paths through a separate `@world/build.js` adapter. The source starter/engine remain unchanged. This scenery pass is recorded in local commits. See `BUILDINGS.md`.
 - Source show-home (`0.0.8-dev`) is now the default, following the explicit request to reproduce the reference architecture. The prior village and starter remain native settings choices. The imported example is pinned and attributed; this scene work is recorded in local commits. See `SHOW-HOME.md`.
+- Pool exit fix (`0.0.9-dev`) moves the native ladder landing clear of its navigation footprint. One engine modification is recorded separately in `UPSTREAM-PATCHES.json`; the original inventory/engine manifest remain intact. This fix is recorded in local commits and has not been deployed.
 - Root development URL: `http://127.0.0.1:18094/`; subdirectory URL: `http://127.0.0.1:18095/journal/`. Both are loopback-only isolated instances with separate data volumes.
 - Phase 1/2 were committed in reviewable batches. Phase 3 is committed locally in batches; no production changes or remote pushes were made. This is not a release-ready theme.
 
@@ -44,6 +45,21 @@
 
 ## Next step
 Complete remaining release acceptance under new implementation scope: Firefox/WebKit/physical-device checks, measured transfer/performance budgets, target reverse-proxy/OPcache validation and supported plugin/version matrix. Plan public metadata routing before cross-site portal support. Keep work confined to the isolated test instance until production activation is explicitly requested.
+
+## Administration diagnostic (2026-11-10)
+- Read-only inspection of the reported production blank page found HTTP 200 editor responses with nonempty bodies; the filtered recent container log contained no PHP fatal errors. This does not prove that the returned page renders correctly.
+- The active Handsome companion plugin (9.2.1, origin editor) still owns both native rich-editor hooks. Its source resolves OwO assets relative to the active theme, producing missing Homecraft paths. This is a confirmed integration problem, not yet proof of the reported whole-page blank screen's complete cause. No production plugin, file or setting was changed.
+- `HC_TEST_AUTH=1 ./dev/browser.sh work/testenv/admin-readonly.cjs` passed four isolated checks: native page/post editors at root and subdirectory, visible title/body/publish controls, native scene-template choice, no JavaScript exceptions or HTTP errors. Content writes were blocked after test login. The diagnostic script/report remain ignored under `work/`.
+- Authenticated production DOM/console inspection remains unavailable: the current tools report no connected document session for the user's in-app browser. An unauthenticated request reaches the normal login page and cannot validate the logged-in editor.
+
+## Pool-ladder fix (2026-11-10)
+- Reproduced the supplied screenshot's trap with real show-home navigation: the old ladder landing at z=23.1 fails `nav.canStand()`, so pressing toward the edge leaves the player swimming at z=24.62. The ladder obstacle is rounded outward to 25 cm cells and the body radius overlaps it.
+- Moved only the ladder landing to z=22.8 (1.2 m onto the deck instead of 0.9 m). Native swimming, climb animation, collision checks and geometry remain in use. The one modified runtime module has an explicit original/local digest record, and packaging rejects both unrecorded runtime edits and edits to the recorded patch.
+- `./dev/browser.sh tests/pool.cjs` passed 20 checks across root/desktop and subdirectory/mobile-sized Chromium: normal coping, three ladder approaches, west/east sides, deck destination from surface/bottom, sea-edge blocking/retreat and a real W key through the native input reader. Physics is advanced at fixed timesteps on native players using the rendered world's grid/nav/ground; this does not claim a physical touchscreen test or real-time traversal speed. Real-avatar ladder-climb screenshots were inspected.
+- New pool-facing view samples: desktop 65 calls / 64,792 triangles / two lights; mobile-sized 53 calls / 60,194 triangles / two lights. Desktop draw calls exceed the 60-call target, and software frame times remain above the frame-time target. No geometry or rendering cost is added by the landing fix; performance acceptance remains incomplete.
+- `python3 tests/package.py` passed deterministic ZIP/CRC/license/static-hash checks, retained-graph upgrade/rollback checks and negative input checks including a modified player patch. All 63 other runtime hashes, 12 adapted example hashes, the player patch digest, PHP index syntax and diff whitespace passed. The distributable is `0.0.9-dev`.
+- `./dev/browser.sh tests/pool.cjs --baseline` restored the original landing value through a browser-only response override: it reproduced the rejected ladder exit, then verified the temporary workaround of swimming left before approaching the normal north edge. The isolated source/deployed files were not reverted for this comparison.
+- No production files/settings, remote Git state or content were changed. The prior administration diagnostic documentation edits are included in this documentation batch.
 
 ## Commit organization
 - `00e47b0`: migration requirements, shared AI rules and integration analysis.
@@ -91,3 +107,10 @@ Each staged batch passed whitespace checks. The saved final reports were checked
 - The documentation commit containing this section records integration, settings, provenance and the final handoff.
 
 Saved reports were checked again: village root/mobile scenarios passed; show-home scenarios passed 18 real F-key interactions; native preset save/reject/restore checks passed. All 64 original runtime hashes and 12 adapted example hashes match their inventories. The 0.0.8-dev ZIP checksum and CRC match. The original vendor import retains paint.js's upstream extra trailing blank line; other staged diffs passed whitespace checks. No runtime or archive bytes changed during this commit pass; guide commit-state wording was updated. Credentials, runtime data and ZIP outputs remain untracked. No production change or remote push was performed.
+
+## Pool fix commits
+- `3fae298`: corrected pool-ladder landing, version 0.0.9-dev and explicit engine-patch hash enforcement in the package builder.
+- `3b588af`: native pool movement/input regression coverage, original-failure control and recorded-patch packaging checks.
+- This documentation commit records the fix, verification, remaining performance limitations and the Handsome editor migration diagnostic.
+
+Commit-time verification rechecked the saved 20 pool checks, original-failure control and four packaging groups; all runtime/example hashes and the final ZIP CRC/static hashes/checksum passed. Staged diffs passed whitespace checks; credentials, runtime data and ZIPs remain untracked. No runtime or archive bytes changed during this commit pass. The previously supplied ZIP retains its build-time documentation; this commit only updates the source guides' commit-state wording. No production modification or remote push was performed.

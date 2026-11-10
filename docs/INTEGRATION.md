@@ -5,7 +5,7 @@ The test theme lives in `theme/`. Homecraft's starter runtime is imported unchan
 
 | Area | Files | Responsibility |
 | --- | --- | --- |
-| Upstream runtime | `theme/engine`, `theme/world`, `theme/vendor`, `theme/assets` | Unchanged pinned source; inventory in `UPSTREAM-FILES.json` |
+| Upstream runtime | `theme/engine`, `theme/world`, `theme/vendor`, `theme/assets` | Pinned source in `UPSTREAM-FILES.json`; explicit engine fixes in `UPSTREAM-PATCHES.json` |
 | Adapter | `theme/functions.php`, shared header/footer and thin index/archive/post/page/404/scene templates | Native settings/URLs, server HTML and bootstrap projection |
 | Integration | `theme/js/app.js`, `bootstrap.js`, `reading.js`, `fallback.js`, `home-config.js`, `traveller.js`, `scene.js` | Validate contract version, supply `@config`, load the scene, expose failure navigation |
 | Presentation | `theme/css/scene.css`, `reading.css` | Independent fallback entry and minimal reading styles |

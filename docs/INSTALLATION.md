@@ -16,6 +16,8 @@ Source checkouts use ordinary asset paths for development. Packages use an addit
 5. Configure identity, optional public page mappings and media through native Appearance → Configure theme. See SETTINGS.md. Guestbook comments use a normal native page with comments enabled. Discussion settings, moderation and anti-spam remain native Typecho settings.
 6. Check scene startup, direct article access, search, comments, protected content and subdirectory URLs before accepting the installation. An unset scene page leaves a conventional blog rather than enabling 3D automatically.
 
+When migrating from Handsome, review its companion plugin before using the native editors. The inspected 9.2.1 plugin registers both page/post rich-editor hooks and builds some editor asset URLs from the currently active theme URL. With Homecraft active, those requests point to absent Handsome assets. Homecraft does not bundle those assets or disable other plugins automatically. Use native plugin management to disable an obsolete theme companion when appropriate; preserve its files/settings for rollback. This resource-path conflict is confirmed, but a reported completely blank editor page still requires authenticated browser diagnostics to establish its full cause.
+
 ## Cache policy
 Theme-generated HTML sends `Cache-Control: private, no-store` because it contains request-specific configuration and native form tokens. Exclude all Typecho HTML, feedback/action/admin routes and authenticated traffic from reverse-proxy full-page caching; do not override this header. Purge any previously cached HTML when installing/upgrading. No service worker is installed.
 
