@@ -30,8 +30,13 @@ def unpack(info, slot):
     for name, digest in release['files'].items():
         assert hashlib.sha256((theme/name).read_bytes()).hexdigest() == digest
     inventory=json.loads((root/'docs/UPSTREAM-FILES.json').read_text())['files']
+    patches=json.loads((theme/'docs/UPSTREAM-PATCHES.json').read_text())['files']
+    assert json.loads((theme/'docs/UPSTREAM-FILES.json').read_text())['files']==inventory
     for name,digest in inventory.items():
         file=theme/'LICENSE' if name=='LICENSE' else theme/'static'/release['assetId']/name
+        if name in patches:
+            assert patches[name]['upstreamSha256']==digest
+            digest=patches[name]['localSha256']
         assert hashlib.sha256(file.read_bytes()).hexdigest()==digest
     return theme, release
 first=build()
@@ -58,10 +63,13 @@ checks.append('rollback selects the original graph while retaining the upgraded 
 (source/'engine/main.js').write_text('invalid upstream edit')
 build('--theme-dir','/repo/work/release-test/source-b',ok=False)
 (source/'engine/main.js').write_bytes((root/'theme/engine/main.js').read_bytes())
+(source/'engine/world/player.js').write_text('invalid edit to recorded patch')
+build('--theme-dir','/repo/work/release-test/source-b',ok=False)
+(source/'engine/world/player.js').write_bytes((root/'theme/engine/world/player.js').read_bytes())
 (source/'assets/.env').write_text('SYNTHETIC_NOT_A_SECRET=1\n')
 build('--theme-dir','/repo/work/release-test/source-b',ok=False)
 (source/'assets/.env').unlink()
-checks.append('builder rejects modified upstream runtime and accidental private configuration')
+checks.append('builder rejects modified upstream runtime, modified recorded patch and accidental private configuration')
 # Restore the distributable to a fresh single-graph build after fixture packaging.
 build()
 active=work/'active'
