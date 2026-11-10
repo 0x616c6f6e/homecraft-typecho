@@ -1,0 +1,18 @@
+{
+  "revision": "df8033aab87569d2779e1c2f74564183527282f7",
+  "source": "examples/terry-home/world",
+  "upstreamFiles": {
+    "paint.js": "11b381788c2e0322ba931071e8cda4f327241213ec36a5678ed09af502f4d8c0",
+    "build.js": "b15e6648ccab439bde989a1ce98ab263d5715c59f9147ab81e1b056ff97fda90",
+    "mountain.js": "fdc4c743e7c67fcad95f2918d73bad39b0630d79ff8635301b91b2b7ba9e1376",
+    "house.js": "4aee52a7852f127e93d65ca8321fc8f8326c8ef865c7b5519e7bf9f58336b654",
+    "roof-access.js": "5b772620b4ae31a91a37d7d0465f941a465c3f9d8d92f45579167692ab3f6375",
+    "vertec.js": "5af43961f34f49d01e822f6e8488e6a2a0dd2030f844bab4a3347e51af6a2162",
+    "stainless.js": "c5bbfbe2bd4165de1f3dfb76ea273db5daf1b6ed67313267d6cac44b67fb25e0",
+    "car.js": "98f4353f4a5f35fec5666a7b8ccf36f7dbf13949fb8bae2b1de702deb8941749",
+    "outer.js": "5440d7924ffd7d7afb83f5e4bcb4e2a1f7205842905c6bc8bd60ccdb0ff55df6",
+    "layout.js": "84f1ae54317df0e7250c39ca8d23513090da2dfa44d20858cc12e651f33e0cea",
+    "plants.js": "d46ad2f43a5c05155d5c118c8a9a44fa432e6450709d163addcf8106ff721e74",
+    "furnish.js": "935c6d3618a39d0b59fae55747224facf37db97645c38485a96ace2335ba9182"
+  }
+}
