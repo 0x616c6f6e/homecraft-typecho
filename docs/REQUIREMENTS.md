@@ -8,6 +8,7 @@ Deliver an installable Typecho theme that combines Homecraft's explorable 3D hom
 Confirmed user requirements:
 - The project is a Homecraft-to-Typecho theme migration.
 - JavaScript is the primary stack; PHP only integrates with Typecho.
+- A small in-scene article browser is explicitly requested: reuse native article/archive pages inside the existing scene modal, with Back, Forward, Reload, All posts, a new-tab link and close/Escape. Preserve the player's position and native Typecho forms/permissions.
 
 The detailed first-release scope below is a proposed implementation baseline derived from the migration discussion. Defaults are explicitly labeled; they are not additional user approvals. Implementation, production activation, remote pushes and optional features remain subject to the current task authorization. This document defines product behavior; `AGENTS.md` defines development rules and `MIGRATION.md` defines sequencing. Resolve conflicts explicitly rather than silently expanding scope.
 
@@ -27,7 +28,7 @@ P0: installable theme, working 3D homepage, recent-post entry, conventional post
 
 P1: in-scene article lists with enhanced filtering, richer transitions, configurable scene entry mappings beyond the initial fixed slots, optional syntax highlighting and additional scene presets.
 
-Deferred: complete in-scene article reading/comment submission with synchronized history, visual world editor, generated per-post buildings, separate admin application, custom authentication, private messaging, email forwarding service and universal plugin compatibility.
+The explicitly requested in-scene browser embeds native reading pages, including their normal comments/password forms. Deferred: a custom SPA article/comment renderer with synchronized top-level history, visual world editor, generated per-post buildings, separate admin application, custom authentication, private messaging, email forwarding service and universal plugin compatibility.
 
 ## 4. Functional requirements
 ### 4.1 Homepage and scene
@@ -58,6 +59,12 @@ Deferred: complete in-scene article reading/comment submission with synchronized
 - FR-19 [P0]: Configure supported options in Typecho's theme-settings UI; do not add a separate admin application.
 - FR-20 [P0]: Validate settings on the server and provide defaults for missing or invalid values. Re-enabling the theme must not delete posts, pages, comments or uploads.
 - FR-21 [P0]: Routine content edits and theme-setting changes appear on subsequent uncached requests without a Node.js runtime or a build on the production server. Explain any required cache invalidation.
+
+### 4.5 In-scene article browser (explicit additional scope)
+- FR-22: Open scene-summary articles and the All posts action in the existing native modal, preserving the scene/player and lazy-loading a same-site native reading document only on demand. Keep the top-level direct-reading link and no-JavaScript fallback as ordinary navigation.
+- FR-23: Provide Back, Forward, Reload, All posts and a current-page new-tab link. Native pagination, search, comments, replies and password gates remain server-controlled; do not clone forms or introduce a content API.
+- FR-24: Suspend scene rendering and movement while the browser is open. Close/Escape from the outer window or embedded document must remove the frame, restore focus and resume rendering. A link to the scene homepage closes the reader instead of loading another scene inside it.
+- FR-25: Limit browser entry points to the site's reading URLs. Keep a visible new-tab route when a page is slow, unavailable or refuses embedding. Fit desktop and narrow viewports; do not claim arbitrary external-site browser support.
 
 Proposed settings:
 | Setting | Source/default | Behavior |

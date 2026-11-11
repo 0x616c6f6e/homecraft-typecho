@@ -16,6 +16,10 @@ Source checkouts use ordinary asset paths for development. Packages use an addit
 5. Configure identity, optional public page mappings and media through native Appearance → Configure theme. See SETTINGS.md. Guestbook comments use a normal native page with comments enabled. Discussion settings, moderation and anti-spam remain native Typecho settings.
 6. Check scene startup, direct article access, search, comments, protected content and subdirectory URLs before accepting the installation. An unset scene page leaves a conventional blog rather than enabling 3D automatically.
 
+If “All posts” or “Read articles” reloads the 3D homepage, check Settings → Reading → the independent article archive checkbox. Selecting a scene page as the homepage does not enable the archive automatically. With `frontArchive=0`, the current theme's blog URL falls back to the site root. Enable the native archive using a collision-free path and verify that the resulting URL renders the post list. Query-string permalink installations include `index.php` in that URL.
+
+From 0.0.10-dev, the ready scene has a “场景内阅读” button and article-card links open a compact native-page browser. The top “直接阅读文章” link still opens ordinary full-page reading. No additional runtime, plugin or endpoint is required. Same-site article pages must allow same-origin embedding; if your reverse proxy applies a frame policy that blocks them, the window's ↗ link still opens the page normally. See SCENE-BROWSER.md for navigation, forms and lifecycle details.
+
 When migrating from Handsome, review its companion plugin before using the native editors. The inspected 9.2.1 plugin registers both page/post rich-editor hooks and builds some editor asset URLs from the currently active theme URL. With Homecraft active, those requests point to absent Handsome assets. Homecraft does not bundle those assets or disable other plugins automatically. Use native plugin management to disable an obsolete theme companion when appropriate; preserve its files/settings for rollback. This resource-path conflict is confirmed, but a reported completely blank editor page still requires authenticated browser diagnostics to establish its full cause.
 
 ## Cache policy
@@ -35,3 +39,6 @@ Record the prior Reading choices and export/record theme configuration: Typecho 
 
 ## Evidence and remaining scope
 See PHASE6-REPORT.md for actual package/install/upgrade/rollback checks. Cross-browser/physical-device performance, plugin compatibility and production infrastructure acceptance remain separate. Public cross-site portal metadata remains deferred. Production activation and remote publication require explicit authorization.
+
+## Browser exits and graphics failures
+0.0.11-dev reduces default scene pixels/shadows, caps scene work at 30 Hz and suspends world calculations during embedded reading. A WebGL context loss in a still-running page exposes text navigation instead of restarting graphics automatically. These measures cannot recover an entire browser process that has exited. For intermittent exits, compare the same operation in another browser and retain the client crash/error details; server health alone cannot diagnose a client GPU/driver/process failure. The homepage with `?plain=1` avoids engine startup, and the configured native blog archive renders without scene assets. These remain useful reading paths while diagnosis continues.

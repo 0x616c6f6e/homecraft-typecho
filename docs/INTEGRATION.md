@@ -11,6 +11,8 @@ The test theme lives in `theme/`. Homecraft's starter runtime is imported unchan
 | Presentation | `theme/css/scene.css`, `reading.css` | Independent fallback entry and minimal reading styles |
 | Development | `dev/`, `tests/phase1.cjs` | Disposable Typecho and actual browser integration checks |
 
+The explicitly requested in-scene reader adds `js/scene-browser.js`, registered before engine startup by `scene.js`. It uses the native modal and iframe for actual Typecho reading documents; navigation controls and per-window URL history remain JavaScript. The parent scene's renderer is suspended while that window is active, including the TV's offscreen pass, then resumed without another render loop. Native forms, permission/password checks, direct article links and the bootstrap schema remain unchanged. See SCENE-BROWSER.md.
+
 The starter island is the reversible POC baseline, not a final art-direction decision. Phase 4 adds native theme settings and configurable public summaries; Phase 5 adds native comments on reading routes; production packaging remains pending.
 
 ## Homepage and native blog route

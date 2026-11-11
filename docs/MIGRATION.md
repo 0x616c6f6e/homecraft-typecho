@@ -61,5 +61,8 @@ Development packaging, content-addressed assets and a disposable native install/
 - Prepare installation, upgrade and rollback instructions.
 Acceptance: validated release artifact and a concrete deployment plan ready for user review. Production activation requires authorization.
 
+## In-scene reader: explicitly requested follow-up
+The user requested a small browser for articles inside the scene. Reuse the existing engine modal/embed lifecycle and actual Typecho reading documents, adding JavaScript navigation controls and lifecycle handling. Keep native auth, password gates, forms and direct URLs. Verify root/subdirectory and both permalink modes, modal input/render suspension, frame cleanup, native navigation/forms and full-page fallback. See SCENE-BROWSER.md. This authorizes the embedded native reader; a custom SPA content/comment implementation remains deferred.
+
 ## Deferred features
-In-scene full article navigation and comment submission, synchronized browser history, a visual building editor, per-post 3D objects, and large scene redesigns require separate scope and estimates.
+A custom SPA article/comment renderer with synchronized top-level history, a visual building editor, per-post 3D objects, and large scene redesigns require separate scope and estimates.

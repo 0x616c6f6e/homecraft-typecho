@@ -34,7 +34,7 @@ Samples were 49 calls / 60,028 triangles / two lights on desktop and 38 calls / 
 
 No production site, Typecho content or remote Git state was modified. The changes and preceding village scenery are recorded in focused local Git commits.
 
-## Pool-ladder correction (0.0.9-dev, committed locally; not deployed)
+## Pool-ladder correction (0.0.9-dev, committed locally)
 The reported trap was reproduced: the old ladder landing overlaps its rounded navigation footprint, preventing `exitAt()` from accepting it. The landing is now 0.3 m farther onto the deck. This is the sole modified engine module, documented and hash-checked in UPSTREAM-PATCHES.json; the engine-generated manifest stays unchanged.
 
 `./dev/browser.sh tests/pool.cjs` passed ten native movement/input checks at each of the root/desktop and subdirectory/mobile-sized sites (20 total). These cover the ordinary north edge, three ladder approaches, west/east coping, native deck-destination exits from surface/bottom, sea-edge blocking/retreat, and a real W event consumed by the native input reader. Native physics is advanced at fixed timesteps against the rendered show-home's navigation and collision data. The real rendered avatar also climbs onto the deck. There were no page exceptions or HTTP errors. Actual touchscreen operation and physical-device frame rate remain unverified.
@@ -42,3 +42,11 @@ The reported trap was reproduced: the old ladder landing overlaps its rounded na
 The new pool-facing camera sample is 65 calls / 64,792 triangles / two lights on desktop and 53 calls / 60,194 triangles / two lights at the mobile-sized viewport. Desktop calls exceed the target of 60; software frame times also remain over target. This fix changes only the landing coordinate and does not optimize the source house. Original 0.0.8 scene/F-station verification above remains historical evidence; its claim of 64 unchanged runtime files predates this single recorded patch.
 
 `./dev/browser.sh tests/pool.cjs --baseline` uses a browser-only override to restore the original landing value. It reproduces the ladder rejection and verifies a temporary workaround for older releases: swim left away from the ladder, then approach the normal north coping. No source/deployment rollback is performed by this negative control.
+
+The user-authorized deployment of 0.0.9-dev on 2026-11-10 is recorded in STATUS.md, including the prior-theme backup and public HTTP verification. This source guide update does not rebuild or change the previously supplied ZIP.
+
+## In-scene reading (0.0.10-dev)
+The top “场景内阅读” action and article/list links inside scene cards open a compact browser using native Typecho documents. It includes Back, Forward, Reload, All posts, a new-tab link and the existing close control. Search, comments and password forms remain native; Escape works from the child document. The scene image stays in the background with drawing/movement suspended until the window closes. The ordinary direct-reading link remains available. See SCENE-BROWSER.md and STATUS.md for implementation and verification.
+
+## Browser stability follow-up (0.0.11-dev)
+The full architecture stays available with lower default DPR/pixel/shadow budgets and a 30 Hz scene cap. Native in-scene reading suspends scene calculations as well as drawing. A running-page WebGL context loss now stops the scene and leaves native text/archive navigation. These changes are recorded engine patches; the earlier pool section's sole-patch description is historical. See UPSTREAM.md and STATUS.md for evidence and limitations. Reduced resource budgets do not establish draw-call/FPS compliance or a cure for an unreproduced browser process exit.
