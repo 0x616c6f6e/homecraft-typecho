@@ -13,3 +13,22 @@ body.hc-fallback { overflow: auto; }
 .recent-posts time { display: block; font-size: .8em; opacity: .8; }
 .recent-posts li p { font-size: .9em; margin-top: .25rem; }
 .brand-logo { object-fit: contain; flex: none; }
+.scene-reader-launch { border: 1px solid #89958c; padding: .25rem .45rem; background: #fff; color: #15543b; cursor: pointer; white-space: nowrap; font: inherit; }
+.scene-reader-launch[hidden], .scene-browser-tools[hidden], .scene-browser-status[hidden] { display: none !important; }
+dialog#panel[data-station="reader"] { width: min(880px, calc(100vw - 32px)); height: min(660px, calc(100dvh - 120px)); }
+body:has(> #panel[data-station="reader"][open]) > :is(#hud, .reading-entry) { visibility: hidden; }
+#panel[data-station="reader"] > .hc-controls { display: none; }
+#panel[data-station="reader"] header { transform: none; width: 100%; }
+.scene-browser-tools { display: flex; align-items: center; gap: 6px; flex: none; padding: 8px; background: #c6c3b9; color: #24342d; border: 2px solid #45433e; border-bottom: 0; }
+.scene-browser-tools button { width: 38px; height: 36px; flex: none; cursor: pointer; border: 1px solid #45433e; box-shadow: inset 1px 1px 0 #fff, inset -1px -2px 0 #68665e; background: #99978d; color: #fff; font: 600 21px/1 system-ui, sans-serif; }
+.scene-browser-tools button:disabled { opacity: .45; cursor: default; }
+.scene-browser-address { display: block; min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 8px; background: #f8f7f2; color: #24342d; font: 13px/1.4 system-ui, sans-serif; }
+.scene-browser-status { flex: none; margin: 0; padding: 6px 10px; background: #f5efd7; color: #443c22; font: 13px/1.4 system-ui, sans-serif; }
+#panel[data-station="reader"] :is(button, a):focus-visible, .scene-reader-launch:focus-visible { outline: 3px solid #f2c94c; outline-offset: 2px; }
+@media (max-width: 480px) {
+  dialog#panel[data-station="reader"] { width: calc(100vw - 20px); height: calc(100dvh - 112px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
+  #panel[data-station="reader"] header { gap: 8px; }
+  #panel[data-station="reader"] h2 { font-size: 18px; }
+  .scene-browser-tools { gap: 4px; padding: 6px; flex-wrap: wrap; }
+  .scene-browser-address { flex-basis: 100%; }
+}

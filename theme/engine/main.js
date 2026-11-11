@@ -121,6 +121,19 @@ async function boot() {
   await nextFrame();
   const stage = createStage($('#world'), quality);
   bootRenderer = stage.renderer;
+  stage.renderer.domElement.addEventListener('webglcontextlost', event => {
+    event.preventDefault();
+    if (bootFailed) return;
+    // Stop this scene permanently. An automatic restore/reboot can repeatedly
+    // hit the same driver/resource failure; reading must remain available.
+    bootFailed = true;
+    bootPhase = 'webgl-context';
+    $('#panel')?.close();
+    stage.renderer.dispose();
+    delete window.__home;
+    plain(new Error(t('显卡绘图上下文已中断，请使用文字阅读', 'Graphics context lost. Please use the reading view.')));
+    dispatchEvent(new Event('homecraft:scene-failed'));
+  });
   bootPhase = 'world';
   progress(0.3);
   await nextFrame();
@@ -835,6 +848,7 @@ async function boot() {
   await stage.renderer.compileAsync(stage.scene, stage.camera);
   stage.sun.visible = true;
   await stage.renderer.compileAsync(stage.scene, stage.camera);
+  if (bootFailed) return;
   rig.update(1 / 60, player);
   stage.render();
   stage.sun.visible = sunOn;
@@ -847,6 +861,7 @@ async function boot() {
   extras.warmup?.(false);
   progress(1);
   await nextFrame();
+  if (bootFailed) return;
   // Outside the portal, facing away from it, the light at rest behind.
   function settlePortalArrival() {
     const f = portal?.front;
@@ -910,7 +925,10 @@ async function boot() {
   function loop(now) {
     if (bootFailed) return;
     requestAnimationFrame(loop);
-    if (document.hidden) { last = now; return; }
+    // Reading does not need physics, particles, minimap or the TV pass either.
+    if (document.hidden || (panel.open && panel.dataset.station === 'reader')) { last = now; return; }
+    // A single loop at at most 30 Hz, independent of display refresh rate.
+    if (now - last < 1000 / 30 - 0.5) return;
     const elapsed = (now - last) / 1000;
     const paused = minimap.isBigOpen() || panel.open || weatherMenuOpen() || isTravelling();
     if (paused && !wasPaused) { player.cancel(); input.clear(); }

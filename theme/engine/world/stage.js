@@ -99,9 +99,10 @@ export function detectQuality() {
   const mobile = coarse || small;
   return {
     mobile,
-    pixelRatio: Math.min(devicePixelRatio || 1, mobile ? 1.25 : 1.5),
-    pixelBudget: mobile ? 1200000 : 3200000,
-    shadowSize: mobile ? 1024 : 2048,
+    // Keep high-DPI and large windows from multiplying the GPU working set.
+    pixelRatio: Math.min(devicePixelRatio || 1, 1),
+    pixelBudget: mobile ? 800000 : 1500000,
+    shadowSize: mobile ? 512 : 1024,
     maxLights: 2,
   };
 }

@@ -1,4 +1,5 @@
 import { showFallback } from './fallback.js';
+import { initSceneBrowser } from './scene-browser.js';
 
 let started = false;
 export async function startScene(data) {
@@ -11,8 +12,13 @@ export async function startScene(data) {
     showFallback(text('正在查看文字版', 'Reading the text version'));
     return;
   }
+  const browser = initSceneBrowser(data);
+  window.addEventListener('homecraft:scene-failed', () => {
+    browser.disable();
+    showFallback(text('3D 绘图中断，可以直接阅读文章', 'Graphics interrupted. You can read the articles.'));
+  }, {once:true});
   // Import success does not mean asynchronous engine startup has completed.
-  let finished = false;
+  let finished = false, slow = false;
   const startedAt = performance.now();
   const watch = setInterval(() => {
     if (window.__homeStartupError) {
@@ -23,8 +29,9 @@ export async function startScene(data) {
       finished = true;
       clearInterval(watch);
       if (status) status.textContent = text('3D 场景已就绪', '3D world ready');
-    } else if (performance.now() - startedAt > 30000) {
-      clearInterval(watch);
+      browser.enable();
+    } else if (!slow && performance.now() - startedAt > 30000) {
+      slow = true;
       // Do not hide a still-booting engine or pretend to cancel it. Navigation
       // remains available above the loading overlay even on a slow device.
       if (status) status.textContent = text('加载较慢，可以直接阅读文章', 'Loading is slow. You can read the articles.');

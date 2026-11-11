@@ -53,7 +53,7 @@ if(retain) {
   }
 }
 const root=new URL('../',import.meta.url).pathname;
-for(const name of ['UPSTREAM.md','UPSTREAM-FILES.json','UPSTREAM-PATCHES.json','SETTINGS.md','READING-COMMENTS.md','INSTALLATION.md','BUILDINGS.md','SHOW-HOME.md','SHOW-HOME-FILES.json'])files.set('docs/'+name,fs.readFileSync(path.join(root,'docs',name)));
+for(const name of ['UPSTREAM.md','UPSTREAM-FILES.json','UPSTREAM-PATCHES.json','SETTINGS.md','READING-COMMENTS.md','INSTALLATION.md','BUILDINGS.md','SHOW-HOME.md','SHOW-HOME-FILES.json','SCENE-BROWSER.md'])files.set('docs/'+name,fs.readFileSync(path.join(root,'docs',name)));
 const manifest={version,assetId,files:Object.fromEntries([...files].filter(([n])=>n.startsWith('static/')).sort().map(([n,d])=>[n,hash(d)]))};
 files.set('release.json',Buffer.from(JSON.stringify(manifest,null,2)+'\n'));
 // ZIP: fixed DOS epoch, stable order, UTF-8 paths, Unix 0644 files, no host metadata.

@@ -5,6 +5,16 @@
       "upstreamSha256": "e632844e222169004d0ad55c72317bc80fb8609285fabd110ed2f1ce2938902d",
       "localSha256": "21c757de66ba5cebd36fa887994151312ae3ddad76e7e6d47dc7e993d6aeb444",
       "reason": "Move the pool ladder landing 0.3 m farther onto the deck so the navigation grid and player radius clear its footprint."
+    },
+    "engine/main.js": {
+      "upstreamSha256": "85aa025d9d4f3535fd8d9b70e89ea2c514f311e539d8df8e289aaeee94afb49f",
+      "localSha256": "873098bf7c9c6316a66748a25ba64911076a6bd711e32dd60d618ed665ccf8fa",
+      "reason": "Cap the single scene loop at 30 Hz, suspend all scene work in the article reader, and stop safely on WebGL context loss with a reading fallback."
+    },
+    "engine/world/stage.js": {
+      "upstreamSha256": "b2182608379a5d67193d577919d914d1edf5d6e292e8ed91a4a73c0119640e51",
+      "localSha256": "3bc275633b73e78ece73f13d33f2ad3aea9c4bf7785715a923bb221e12552e7e",
+      "reason": "Limit the default high-DPI pixel budget and shadow-map allocation to reduce GPU load on large windows and constrained devices."
     }
   }
 }
